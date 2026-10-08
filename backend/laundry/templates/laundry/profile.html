@@ -1,0 +1,128 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile - LaundryCare</title>
+
+    <link rel="stylesheet" href="{% static 'laundry/style.css' %}?v=3">
+</head>
+
+<body>
+
+    <header>
+        <h1>LaundryCare</h1>
+
+        <nav>
+            <a href="/">Home</a>
+            <a href="/dashboard/">Dashboard</a>
+            <a href="/profile/">Profile</a>
+            <a href="/logout/">Logout</a>
+        </nav>
+    </header>
+
+
+    <main class="profile">
+
+        <h2>My Profile</h2>
+
+        <div class="profile-card">
+
+            <h3>Customer Information</h3>
+
+            <p>
+                <strong>Username:</strong>
+                {{ customer.user.username }}
+            </p>
+
+            <p>
+                <strong>Email:</strong>
+                {{ customer.user.email }}
+            </p>
+
+            <p>
+                <strong>Name:</strong>
+                {{ customer.name }}
+            </p>
+
+            <p>
+                <strong>Phone:</strong>
+                {{ customer.phone }}
+            </p>
+
+            <p>
+                <strong>Preferences:</strong>
+                {% if customer.preferences %}
+                    {{ customer.preferences }}
+                {% else %}
+                    Not provided
+                {% endif %}
+            </p>
+
+        </div>
+    <section class="address-section">
+
+    <h2>My Addresses</h2>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <label>Address</label>
+        <input type="text" name="address_line" required>
+
+        <label>City</label>
+        <input type="text" name="city" required>
+
+        <label>Pincode</label>
+        <input type="text" name="pincode" required>
+
+        <button type="submit">Add Address</button>
+
+    </form>
+
+
+    <h3>Saved Addresses</h3>
+
+    {% if addresses %}
+
+        {% for address in addresses %}
+
+            <div class="address-card">
+
+                <p>
+                    <strong>Address:</strong>
+                    {{ address.address_line }}
+                </p>
+
+                <p>
+                    <strong>City:</strong>
+                    {{ address.city }}
+                </p>
+
+                <p>
+                    <strong>Pincode:</strong>
+                    {{ address.pincode }}
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No addresses added yet.</p>
+
+    {% endif %}
+
+</section>
+
+    </main>
+
+</body>
+
+</html>

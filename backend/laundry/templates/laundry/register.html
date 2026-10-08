@@ -1,0 +1,63 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Register - LaundryCare</title>
+
+    <link rel="stylesheet" href="{% static 'laundry/style.css' %}">
+</head>
+
+<body>
+
+    <header>
+        <h1>LaundryCare</h1>
+
+        <nav>
+            <a href="/">Home</a>
+            <a href="/login/">Login</a>
+        </nav>
+    </header>
+
+
+    <main class="form-container">
+
+        <h2>Create Your Account</h2>
+        {% if error %}
+    <p>{{ error }}</p>
+{% endif %}
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <label>Username</label>
+            <input type="text" name="username" required>
+
+            <label>Email</label>
+            <input type="email" name="email" required>
+
+            <label>Password</label>
+            <input type="password" name="password" required>
+
+            <label>Confirm Password</label>
+            <input type="password" name="confirm_password" required>
+
+            <button type="submit">Register</button>
+
+        </form>
+
+        <p>
+            Already have an account?
+            <a href="/login/">Login here</a>
+        </p>
+
+    </main>
+
+</body>
+
+</html>
