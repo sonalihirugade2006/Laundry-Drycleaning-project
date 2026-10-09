@@ -15,15 +15,15 @@
 <body>
 
     <!-- Navigation Bar -->
-    <header>
+    <header >
         <h1>LaundryCare</h1>
 
         <nav>
-            <a href="#">Home</a>
+           <a href="{% url 'home' %}">Home</a>
             <a href="#services">Services</a>
             <a href="#how-it-works">How It Works</a>
-            <a href="#">Login</a>
-            <a href="#">Register</a>
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'register' %}">Register</a>
         </nav>
     </header>
 
@@ -40,7 +40,7 @@
                 for your everyday clothing needs.
             </p>
 
-            <button>Place an Order</button>
+            <a href="{% url 'place_order' %}" class="btn">Place an Order</a>
 
         </div>
 
@@ -55,6 +55,7 @@
         <div class="service-container">
 
             <div class="service-card">
+                <div class="feature-icon">🧺</div>
                 <h3>Washing</h3>
                 <p>
                     Professional washing service for your everyday clothes.
@@ -62,6 +63,7 @@
             </div>
 
             <div class="service-card">
+                <div class="feature-icon">👔</div>
                 <h3>Dry Cleaning</h3>
                 <p>
                     Special care and cleaning for delicate garments.
@@ -69,6 +71,7 @@
             </div>
 
             <div class="service-card">
+                <div class="feature-icon">👕</div>
                 <h3>Ironing</h3>
                 <p>
                     Get your clothes neatly pressed and ready to wear.
@@ -88,16 +91,22 @@
         <div class="steps">
 
             <div class="step">
+                
+            <div class="feature-icon">📋</div>
                 <h3>1. Place Order</h3>
                 <p>Select your required laundry services.</p>
             </div>
 
             <div class="step">
+                
+            <div class="feature-icon">⚙️</div>
                 <h3>2. We Process</h3>
                 <p>Your clothes go through the required cleaning stages.</p>
             </div>
 
             <div class="step">
+                
+            <div class="feature-icon">🚚</div>
                 <h3>3. Get Delivery</h3>
                 <p>Receive your clean and ready clothes.</p>
             </div>
@@ -115,16 +124,22 @@
         <div class="why-container">
 
             <div>
+                
+        <div class="feature-icon">🛡️</div>
                 <h3>Quality Service</h3>
                 <p>Professional care for your garments.</p>
             </div>
 
             <div>
+                        
+        <div class="feature-icon">⚡</div>
                 <h3>Easy Ordering</h3>
                 <p>Simple and convenient order process.</p>
             </div>
 
             <div>
+                
+        <div class="feature-icon">🚚</div>
                 <h3>Reliable Delivery</h3>
                 <p>Track your order from processing to delivery.</p>
             </div>

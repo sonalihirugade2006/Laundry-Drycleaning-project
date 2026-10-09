@@ -610,3 +610,291 @@ footer {
         font-size: 24px;
     }
 }
+
+/* ===== Login and Register Pages ===== */
+
+body:has(input[name="username"]) {
+    min-height: 100vh;
+    background: #f1f6f4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 25px 16px;
+}
+
+body:has(input[name="username"]) h2 {
+    color: #285f50;
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 24px;
+}
+
+body:has(input[name="username"]) form {
+    width: 100%;
+    max-width: 430px;
+    padding: 32px;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 5px 22px rgba(0, 0, 0, 0.09);
+}
+
+body:has(input[name="username"]) form p {
+    margin-bottom: 16px;
+    line-height: 1.6;
+}
+
+body:has(input[name="username"]) form label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: 600;
+    color: #34463f;
+}
+
+body:has(input[name="username"]) form input {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 1px solid #cbd8d2;
+    border-radius: 7px;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+body:has(input[name="username"]) form input:focus {
+    outline: none;
+    border-color: #398579;
+    box-shadow: 0 0 0 3px rgba(57, 133, 121, 0.12);
+}
+
+body:has(input[name="username"]) form button,
+body:has(input[name="username"]) form input[type="submit"] {
+    width: 100%;
+    padding: 13px;
+    margin-top: 12px;
+    border: none;
+    border-radius: 7px;
+    background: #285f50;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+body:has(input[name="username"]) form button:hover,
+body:has(input[name="username"]) form input[type="submit"]:hover {
+    background: #1d493d;
+}
+
+body:has(input[name="username"]) > p {
+    margin-top: 20px;
+    text-align: center;
+    line-height: 1.8;
+}
+
+body:has(input[name="username"]) a {
+    color: #285f50;
+    font-weight: 600;
+}
+
+/* ===== Register Page ===== */
+
+.form-container {
+    width: calc(100% - 32px);
+    max-width: 460px;
+    margin: 45px auto;
+    padding: 35px;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 5px 22px rgba(0, 0, 0, 0.08);
+}
+
+.form-container h2 {
+    color: #285f50;
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 28px;
+}
+
+.form-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-container label {
+    display: block;
+    color: #34463f;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.form-container input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd8d2;
+    border-radius: 7px;
+    background: #fbfcfb;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+.form-container input:focus {
+    outline: none;
+    border-color: #398579;
+    box-shadow: 0 0 0 3px rgba(57, 133, 121, 0.12);
+}
+
+.form-container button {
+    width: 100%;
+    margin-top: 14px;
+    padding: 13px;
+    border: none;
+    border-radius: 7px;
+    background: #285f50;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.form-container button:hover {
+    background: #1d493d;
+}
+
+.form-container > p {
+    margin-top: 22px;
+    text-align: center;
+    line-height: 1.6;
+}
+
+.form-container a {
+    color: #285f50;
+    font-weight: 600;
+}
+
+@media (max-width: 600px) {
+    .form-container {
+        padding: 25px 20px;
+        margin: 25px auto;
+    }
+}
+
+/* ===== Improve How It Works Cards ===== */
+
+.how-it-works {
+    background-color: #f5f7fa;
+}
+
+.how-it-works .steps {
+    max-width: 1100px;
+    margin: 0 auto;
+    gap: 25px;
+}
+
+.how-it-works .step {
+    flex: 1 1 250px;
+    max-width: 320px;
+    background-color: #ffffff;
+    padding: 30px 24px;
+    border: 1px solid #e3eae6;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.how-it-works .step:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
+}
+
+.how-it-works .step h3 {
+    color: #285f50;
+    margin-bottom: 14px;
+}
+
+.how-it-works .step p {
+    color: #555555;
+    line-height: 1.7;
+}
+
+
+/* ===== Improve Why Choose Us Cards ===== */
+
+.why-us .why-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    gap: 25px;
+}
+
+.why-us .why-container > div {
+    flex: 1 1 250px;
+    max-width: 320px;
+    background-color: #f5f7fa;
+    padding: 30px 24px;
+    border: 1px solid #e3eae6;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.why-us .why-container > div:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
+}
+
+.why-us .why-container h3 {
+    color: #285f50;
+    margin-bottom: 14px;
+}
+
+.why-us .why-container p {
+    color: #555555;
+    line-height: 1.7;
+}
+
+/* Feature Card Icons */
+
+.feature-icon {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    background: #e0f2eb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 38px;
+}
+
+.how-it-works .step,
+.why-us .why-container > div {
+    text-align: center;
+}
+
+.how-it-works .step h3,
+.why-us .why-container h3 {
+    color: #285f50;
+}
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.hero-content a.btn {
+    display: inline-block;
+    padding: 12px 28px;
+    background-color: #285f50;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.hero-content a.btn:hover {
+    background-color: #1e493d;
+}
