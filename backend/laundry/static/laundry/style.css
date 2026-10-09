@@ -282,3 +282,331 @@ footer {
 .address-card p {
     margin-bottom: 8px;
 }
+/* Services Page */
+
+.services-page {
+    max-width: 1100px;
+    margin: 50px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.services-page h2 {
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+
+.services-intro {
+    margin-bottom: 40px;
+    font-size: 17px;
+}
+
+.services-page .service-container {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.services-page .service-card {
+    width: 300px;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.services-page .service-card h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.services-page .service-card p {
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+/* My Orders Page */
+
+.orders-page {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.orders-page h2 {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 32px;
+}
+
+.orders-intro {
+    text-align: center;
+    margin-bottom: 35px;
+    color: #666;
+}
+
+.orders-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.order-card {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.order-card h3 {
+    margin-bottom: 20px;
+    font-size: 23px;
+}
+
+.order-card p {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.order-card h4 {
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.order-item {
+    background-color: #f5f7fa;
+    padding: 18px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.order-item p {
+    margin-bottom: 7px;
+}
+
+.no-orders {
+    text-align: center;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.no-orders a {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    text-decoration: none;
+}
+/* Dashboard Links */
+
+.dashboard-card a {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+/* Dashboard */
+
+.dashboard {
+    max-width: 1100px;
+    margin: 50px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.dashboard h2 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.dashboard > p {
+    margin-bottom: 35px;
+}
+
+.dashboard-container {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.dashboard-card {
+    width: 280px;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard-card h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.dashboard-card p {
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.dashboard-card a {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+/* Order Tracking */
+
+.tracking-page {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.tracking-page h2 {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.tracking-intro {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.tracking-card {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.tracking-card h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.tracking-card h4 {
+    font-size: 20px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.tracking-stages {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.tracking-stage {
+    padding: 18px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.tracking-stage h5 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.tracking-stage p {
+    margin: 5px 0;
+}
+
+
+/* ===== Place Order Page ===== */
+
+.order-page {
+    max-width: 720px;
+    margin: 40px auto;
+    padding: 32px;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 5px 22px rgba(0, 0, 0, 0.08);
+    outline: none;
+    box-sizing: border-box;
+}
+
+.order-page h2 {
+    text-align: center;
+    color: #234b40;
+    margin: 0 0 28px;
+    font-size: 28px;
+}
+
+.order-page form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.order-page label {
+    display: block;
+    margin-top: 8px;
+    color: #303d38;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.order-page input,
+.order-page select,
+.order-page textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d5ded9;
+    border-radius: 8px;
+    background: #fbfcfb;
+    color: #26352f;
+    font-family: inherit;
+    font-size: 15px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.order-page input:focus,
+.order-page select:focus,
+.order-page textarea:focus {
+    border-color: #398579;
+    box-shadow: 0 0 0 3px rgba(57, 133, 121, 0.12);
+}
+
+.order-page textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.order-page button {
+    width: 100%;
+    margin-top: 18px;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    background: #285f50;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.order-page button:hover {
+    background: #1d493d;
+}
+
+@media (max-width: 600px) {
+    .order-page {
+        margin: 20px auto;
+        padding: 22px 18px;
+        width: calc(100% - 28px);
+    }
+
+    .order-page h2 {
+        font-size: 24px;
+    }
+}

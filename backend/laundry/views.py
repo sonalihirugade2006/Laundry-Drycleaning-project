@@ -3,11 +3,86 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from .models import Customer,Address
+from .models import Customer, Address, Service, Order, OrderItem, ProcessingStage, Delivery, Payment
 
 
 def home(request):
     return render(request, 'laundry/home.html')
+
+def services(request):
+
+    all_services = Service.objects.all()
+
+    return render(
+        request,
+        'laundry/services.html',
+        {
+            'services': all_services
+        }
+    )
+
+@login_required
+def place_order(request):
+
+    customer = Customer.objects.get(user=request.user)
+
+    services = Service.objects.all()
+    addresses = Address.objects.filter(customer=customer)
+
+    if request.method == 'POST':
+
+        service_id = request.POST.get('service')
+        address_id = request.POST.get('address')
+        garment_type = request.POST.get('garment_type')
+        quantity = int(request.POST.get('quantity'))
+        condition = request.POST.get('condition')
+        expected_date = request.POST.get('expected_date')
+        special_instructions = request.POST.get('special_instructions')
+
+        service = Service.objects.get(id=service_id)
+        address = Address.objects.get(
+            id=address_id,
+            customer=customer
+        )
+
+        total_amount = service.price_per_item * quantity
+
+        order = Order.objects.create(
+            customer=customer,
+            address=address,
+            expected_date=expected_date,
+            special_instructions=special_instructions,
+            total_amount=total_amount
+        )
+
+        OrderItem.objects.create(
+            order=order,
+            service=service,
+            garment_type=garment_type,
+            quantity=quantity,
+            condition=condition,
+            price_at_order=service.price_per_item
+        )
+
+        Payment.objects.create(
+            order=order,
+            total_amount=total_amount,
+            discount=0,
+            advance_amount=0,
+            pending_amount=total_amount,
+            payment_status='Pending'
+        )
+
+        return redirect('/dashboard/')
+
+    return render(
+        request,
+        'laundry/place_order.html',
+        {
+            'services': services,
+            'addresses': addresses
+        }
+    )
 
 
 def register(request):
@@ -79,6 +154,45 @@ def dashboard(request):
     return render(request, 'laundry/dashboard.html')
 
 @login_required
+def my_orders(request):
+
+    customer = Customer.objects.get(user=request.user)
+
+    orders = Order.objects.filter(
+        customer=customer
+    ).order_by('-order_date')
+
+    return render(
+        request,
+        'laundry/my_orders.html',
+        {
+            'orders': orders
+        }
+    )
+@login_required
+def order_tracking(request, order_id):
+
+    customer = Customer.objects.get(user=request.user)
+
+    order = Order.objects.get(
+        id=order_id,
+        customer=customer
+    )
+
+    stages = ProcessingStage.objects.filter(
+        order=order
+    ).order_by('id')
+
+    return render(
+        request,
+        'laundry/order_tracking.html',
+        {
+            'order': order,
+            'stages': stages
+        }
+    )
+
+@login_required
 def profile(request):
 
     customer = Customer.objects.get(user=request.user)
@@ -110,3 +224,37 @@ def profile(request):
 def logout_view(request):
     logout(request)
     return redirect('/login/')
+
+@login_required
+def my_deliveries(request):
+    customer = Customer.objects.get(user=request.user)
+
+    deliveries = Delivery.objects.filter(
+        order__customer=customer
+    ).select_related(
+        'order',
+        'address',
+        'delivery_staff'
+    ).order_by('-id')
+
+    return render(
+        request,
+        'laundry/my_deliveries.html',
+        {'deliveries': deliveries}
+    )
+
+@login_required
+def my_payments(request):
+    customer = Customer.objects.get(user=request.user)
+
+    payments = Payment.objects.filter(
+        order__customer=customer
+    ).select_related(
+        'order'
+    ).order_by('-id')
+
+    return render(
+        request,
+        'laundry/my_payments.html',
+        {'payments': payments}
+    )

@@ -1,0 +1,87 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Deliveries - LaundryCare</title>
+    <link rel="stylesheet" href="{% static 'laundry/style.css' %}">
+</head>
+<body>
+
+<header>
+    <h1>LaundryCare</h1>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/dashboard/">Dashboard</a>
+        <a href="/my-orders/">My Orders</a>
+        <a href="/profile/">Profile</a>
+        <a href="/logout/">Logout</a>
+    </nav>
+</header>
+
+<main class="tracking-page">
+    <h2>My Deliveries</h2>
+    <p class="tracking-intro">
+        View your laundry pickup and delivery details.
+    </p>
+
+    {% if deliveries %}
+        <div class="tracking-stages">
+            {% for delivery in deliveries %}
+                <div class="tracking-stage">
+                    <h3>Order #{{ delivery.order.id }}</h3>
+
+                    <p>
+                        <strong>Delivery Status:</strong>
+                        {{ delivery.delivery_status }}
+                    </p>
+
+                    <p>
+                        <strong>Pickup Date:</strong>
+                        {% if delivery.pickup_date %}
+                            {{ delivery.pickup_date|date:"d M Y, h:i A" }}
+                        {% else %}
+                            Not scheduled
+                        {% endif %}
+                    </p>
+
+                    <p>
+                        <strong>Delivery Date:</strong>
+                        {% if delivery.delivery_date %}
+                            {{ delivery.delivery_date|date:"d M Y, h:i A" }}
+                        {% else %}
+                            Not scheduled
+                        {% endif %}
+                    </p>
+
+                    <p>
+                        <strong>Address:</strong>
+                        {{ delivery.address.address_line }},
+                        {{ delivery.address.city }} -
+                        {{ delivery.address.pincode }}
+                    </p>
+
+                    <p>
+                        <strong>Delivery Staff:</strong>
+                        {% if delivery.delivery_staff %}
+                            {{ delivery.delivery_staff.username }}
+                        {% else %}
+                            Not assigned
+                        {% endif %}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="tracking-card">
+            <h3>No Deliveries Scheduled Yet</h3>
+            <p>Your pickup and delivery details will appear here once scheduled.</p>
+            <a href="/my-orders/">View My Orders</a>
+        </div>
+    {% endif %}
+</main>
+
+</body>
+</html>

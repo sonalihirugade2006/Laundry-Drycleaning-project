@@ -1,0 +1,83 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Payments - LaundryCare</title>
+    <link rel="stylesheet" href="{% static 'laundry/style.css' %}">
+</head>
+<body>
+
+<header>
+    <h1>LaundryCare</h1>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/dashboard/">Dashboard</a>
+        <a href="/my-orders/">My Orders</a>
+        <a href="/my-deliveries/">My Deliveries</a>
+        <a href="/logout/">Logout</a>
+    </nav>
+</header>
+
+<main class="tracking-page">
+    <h2>My Payments</h2>
+
+    <p class="tracking-intro">
+        View your laundry bills and payment details.
+    </p>
+
+    {% if payments %}
+        <div class="tracking-stages">
+            {% for payment in payments %}
+                <div class="tracking-stage">
+                    <h3>Bill for Order #{{ payment.order.id }}</h3>
+
+                    <p>
+                        <strong>Total Amount:</strong>
+                        ₹{{ payment.total_amount }}
+                    </p>
+
+                    <p>
+                        <strong>Discount:</strong>
+                        ₹{{ payment.discount }}
+                    </p>
+
+                    <p>
+                        <strong>Advance Amount:</strong>
+                        ₹{{ payment.advance_amount }}
+                    </p>
+
+                    <p>
+                        <strong>Pending Amount:</strong>
+                        ₹{{ payment.pending_amount }}
+                    </p>
+
+                    <p>
+                        <strong>Payment Status:</strong>
+                        {{ payment.payment_status }}
+                    </p>
+
+                    <p>
+                        <strong>Payment Date:</strong>
+                        {% if payment.payment_date %}
+                            {{ payment.payment_date|date:"d M Y, h:i A" }}
+                        {% else %}
+                            Not paid yet
+                        {% endif %}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="tracking-card">
+            <h3>No Payments Found</h3>
+            <p>Your bills will appear here after you place an order.</p>
+            <a href="/place-order/">Place an Order</a>
+        </div>
+    {% endif %}
+</main>
+
+</body>
+</html>

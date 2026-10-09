@@ -1,0 +1,128 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Place Order - LaundryCare</title>
+
+    <link rel="stylesheet" href="{% static 'laundry/style.css' %}?v=6">
+</head>
+
+<body>
+
+    <header>
+        <h1>LaundryCare</h1>
+
+        <nav>
+            <a href="/">Home</a>
+            <a href="/dashboard/">Dashboard</a>
+            <a href="/services/">Services</a>
+            <a href="/profile/">Profile</a>
+            <a href="/logout/">Logout</a>
+        </nav>
+    </header>
+
+
+    <main class="order-page">
+
+        <h2>Place a New Order</h2>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <label>Service</label>
+
+            <select name="service" required>
+
+                <option value="">Select Service</option>
+
+                {% for service in services %}
+
+                    <option value="{{ service.id }}">
+                        {{ service.service_name }} - ₹{{ service.price_per_item }} / item
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <label>Delivery Address</label>
+
+            <select name="address" required>
+
+                <option value="">Select Address</option>
+
+                {% for address in addresses %}
+
+                    <option value="{{ address.id }}">
+                        {{ address.address_line }}, {{ address.city }} - {{ address.pincode }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <label>Garment Type</label>
+
+            <input
+                type="text"
+                name="garment_type"
+                placeholder="Example: Shirt"
+                required
+            >
+
+
+            <label>Quantity</label>
+
+            <input
+                type="number"
+                name="quantity"
+                min="1"
+                required
+            >
+
+
+            <label>Garment Condition</label>
+
+            <input
+                type="text"
+                name="condition"
+                placeholder="Example: Good condition"
+            >
+
+
+            <label>Expected Delivery Date</label>
+
+            <input
+                type="date"
+                name="expected_date"
+                required
+            >
+
+
+            <label>Special Instructions</label>
+
+            <textarea
+                name="special_instructions"
+                placeholder="Any special instructions..."
+            ></textarea>
+
+
+            <button type="submit">
+                Place Order
+            </button>
+
+        </form>
+
+    </main>
+
+</body>
+
+</html>

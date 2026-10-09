@@ -1,0 +1,136 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Orders - LaundryCare</title>
+
+    <link rel="stylesheet" href="{% static 'laundry/style.css' %}?v=4">
+</head>
+
+<body>
+
+<header>
+    <h1>LaundryCare</h1>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/dashboard/">Dashboard</a>
+        <a href="/services/">Services</a>
+        <a href="/profile/">Profile</a>
+        <a href="/logout/">Logout</a>
+    </nav>
+</header>
+
+
+<main class="orders-page">
+
+    <h2>My Orders</h2>
+
+    <p class="orders-intro">
+        View and track all your laundry and dry-cleaning orders.
+    </p>
+
+
+    {% if orders %}
+
+        <div class="orders-container">
+
+            {% for order in orders %}
+
+                <div class="order-card">
+
+                    <h3>Order #{{ order.id }}</h3>
+
+                    <p>
+                        <strong>Order Date:</strong>
+                        {{ order.order_date|date:"d M Y, h:i A" }}
+                    </p>
+
+                    <p>
+                        <strong>Expected Delivery:</strong>
+                        {{ order.expected_date|date:"d M Y" }}
+                    </p>
+
+                    <p>
+                        <strong>Status:</strong>
+                        {{ order.status }}
+                    </p>
+
+                    <p>
+                        <strong>Total Amount:</strong>
+                        ₹{{ order.total_amount }}
+                    </p>
+                    <a href="/order-tracking/{{ order.id }}/">
+                    Track Order
+                    </a>
+
+                    <p>
+                        <strong>Delivery Address:</strong><br>
+                        {{ order.address.address_line }},
+                        {{ order.address.city }} -
+                        {{ order.address.pincode }}
+                    </p>
+
+                    {% if order.special_instructions %}
+                    <p>
+                        <strong>Special Instructions:</strong>
+                        {{ order.special_instructions }}
+                    </p>
+                    {% endif %}
+
+
+                    <h4>Order Items</h4>
+
+                    {% for item in order.items.all %}
+
+                        <div class="order-item">
+
+                            <p>
+                                <strong>Service:</strong>
+                                {{ item.service.service_name }}
+                            </p>
+
+                            <p>
+                                <strong>Garment:</strong>
+                                {{ item.garment_type }}
+                            </p>
+
+                            <p>
+                                <strong>Quantity:</strong>
+                                {{ item.quantity }}
+                            </p>
+
+                            <p>
+                                <strong>Price per Item:</strong>
+                                ₹{{ item.price_at_order }}
+                            </p>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="no-orders">
+            <h3>No Orders Yet</h3>
+            <p>You have not placed any orders yet.</p>
+
+            <a href="/place-order/">Place Your First Order</a>
+        </div>
+
+    {% endif %}
+
+</main>
+
+</body>
+</html>

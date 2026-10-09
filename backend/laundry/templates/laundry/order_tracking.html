@@ -1,0 +1,101 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Order Tracking - LaundryCare</title>
+
+    <link rel="stylesheet" href="{% static 'laundry/style.css' %}?v=6">
+</head>
+
+<body>
+
+<header>
+    <h1>LaundryCare</h1>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/dashboard/">Dashboard</a>
+        <a href="/my-orders/">My Orders</a>
+        <a href="/profile/">Profile</a>
+        <a href="/logout/">Logout</a>
+    </nav>
+</header>
+
+
+<main class="tracking-page">
+
+    <h2>Order Tracking</h2>
+
+    <p class="tracking-intro">
+        Track the processing progress of your laundry order.
+    </p>
+
+
+    <div class="tracking-card">
+
+        <h3>Order #{{ order.id }}</h3>
+
+        <p>
+            <strong>Current Status:</strong>
+            {{ order.status }}
+        </p>
+
+        <p>
+            <strong>Expected Delivery:</strong>
+            {{ order.expected_date|date:"d M Y" }}
+        </p>
+
+
+        <h4>Processing Stages</h4>
+
+        <div class="tracking-stages">
+
+            {% for stage in stages %}
+
+                <div class="tracking-stage">
+
+                    <h5>{{ stage.stage_name }}</h5>
+
+                    <p>
+                        <strong>Status:</strong>
+                        {{ stage.status }}
+                    </p>
+
+                    {% if stage.started_at %}
+                    <p>
+                        Started:
+                        {{ stage.started_at|date:"d M Y, h:i A" }}
+                    </p>
+                    {% endif %}
+
+                    {% if stage.completed_at %}
+                    <p>
+                        Completed:
+                        {{ stage.completed_at|date:"d M Y, h:i A" }}
+                    </p>
+                    {% endif %}
+
+                </div>
+
+            {% empty %}
+
+                <p>
+                    Processing stages have not been added yet.
+                </p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+
+</html>

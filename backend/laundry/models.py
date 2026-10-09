@@ -147,8 +147,14 @@ class Payment(models.Model):
         decimal_places=2,
         default=0
     )
+    
     payment_status = models.CharField(
         max_length=50,
+        choices=[
+            ('Pending', 'Pending'),
+            ('Partial', 'Partial Payment'),
+            ('Paid', 'Paid'),
+        ],
         default='Pending'
     )
     payment_date = models.DateTimeField(

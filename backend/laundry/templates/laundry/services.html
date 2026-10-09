@@ -1,0 +1,68 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Our Services - LaundryCare</title>
+
+    <link rel="stylesheet" href="{% static 'laundry/style.css' %}?v=3">
+</head>
+
+<body>
+
+    <header>
+        <h1>LaundryCare</h1>
+
+        <nav>
+            <a href="/">Home</a>
+            <a href="/services/">Services</a>
+            <a href="/login/">Login</a>
+            <a href="/register/">Register</a>
+        </nav>
+    </header>
+
+
+    <main class="services-page">
+
+        <h2>Our Services</h2>
+
+        <p class="services-intro">
+            Choose from our professional laundry and dry-cleaning services.
+        </p>
+
+        <div class="service-container">
+
+            {% for service in services %}
+
+                <div class="service-card">
+
+                    <h3>{{ service.service_name }}</h3>
+
+                    <p>
+                        {{ service.description }}
+                    </p>
+
+                    <p>
+                        <strong>Price:</strong>
+                        ₹{{ service.price_per_item }} / item
+                    </p>
+
+                </div>
+
+            {% empty %}
+
+                <p>No services available at the moment.</p>
+
+            {% endfor %}
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>
