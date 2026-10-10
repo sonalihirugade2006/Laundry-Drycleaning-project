@@ -52,8 +52,21 @@ class PaymentForm(forms.ModelForm):
         return cleaned_data
 
 
+
 class PaymentAdmin(admin.ModelAdmin):
     form = PaymentForm
+
+    def save_model(self, request, obj, form, change):
+        from django.utils import timezone
+
+        if obj.payment_status == 'Paid':
+            if not obj.payment_date:
+                obj.payment_date = timezone.now()
+        else:
+            obj.payment_date = None
+
+        super().save_model(request, obj, form, change)
+
 class DeliveryForm(forms.ModelForm):
     class Meta:
         model = Delivery
@@ -78,6 +91,7 @@ class DeliveryForm(forms.ModelForm):
         return cleaned_data
 
 
+
 class DeliveryAdmin(admin.ModelAdmin):
     form = DeliveryForm
 
@@ -86,16 +100,53 @@ class DeliveryAdmin(admin.ModelAdmin):
 
         if obj.delivery_status.strip().lower() == 'delivered':
             order = obj.order
-            order.status = 'Delivered'
-            order.save(update_fields=['status'])
 
+            if order.status != 'Delivered':
+                order.status = 'Delivered'
+                order.save(update_fields=['status'])
+
+                Notification.objects.create(
+                    user=order.customer.user,
+                    order=order,
+                    message=f"Your Order #{order.id} has been delivered successfully.",
+                    notification_type='Delivery Update'
+                )
 
 admin.site.register(Customer)
 admin.site.register(Address)
 admin.site.register(Service)
 admin.site.register(Order)
 admin.site.register(OrderItem)
-admin.site.register(ProcessingStage)
 admin.site.register(Delivery, DeliveryAdmin)
+
+@admin.register(ProcessingStage)
+class ProcessingStageAdmin(admin.ModelAdmin):
+
+    def save_model(self, request, obj, form, change):
+        from django.utils import timezone
+
+        if obj.status == 'In Progress' and not obj.started_at:
+            obj.started_at = timezone.now()
+
+        if obj.status == 'Completed':
+            if not obj.started_at:
+                obj.started_at = timezone.now()
+
+            if not obj.completed_at:
+                obj.completed_at = timezone.now()
+
+        super().save_model(request, obj, form, change)
+
+        if obj.status == 'Completed':
+            order = obj.order
+
+            if obj.stage_name == 'Ready' and order.status != 'Ready':
+                order.status = 'Ready'
+                order.save(update_fields=['status'])
+
+            elif obj.stage_name == 'Delivered' and order.status != 'Delivered':
+                order.status = 'Delivered'
+                order.save(update_fields=['status'])
+
 admin.site.register(Payment, PaymentAdmin)
 admin.site.register(Notification)

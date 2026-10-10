@@ -80,19 +80,45 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.garment_type} - {self.quantity}"
 
+
 class ProcessingStage(models.Model):
+    STAGE_CHOICES = [
+        ('Received', 'Received'),
+        ('Sorting', 'Sorting'),
+        ('Washing', 'Washing'),
+        ('Drying', 'Drying'),
+        ('Ironing', 'Ironing'),
+        ('Quality Check', 'Quality Check'),
+        ('Ready', 'Ready'),
+        ('Delivered', 'Delivered'),
+    ]
+
+    STATUS_CHOICES = [
+        ('Pending', 'Pending'),
+        ('In Progress', 'In Progress'),
+        ('Completed', 'Completed'),
+    ]
+
     order = models.ForeignKey(
         Order,
         on_delete=models.CASCADE,
         related_name='processing_stages'
     )
-    stage_name = models.CharField(max_length=100)
-    status = models.CharField(max_length=50)
+    stage_name = models.CharField(
+        max_length=100,
+        choices=STAGE_CHOICES
+    )
+    status = models.CharField(
+        max_length=50,
+        choices=STATUS_CHOICES,
+        default='Pending'
+    )
     started_at = models.DateTimeField(null=True, blank=True)
     completed_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.order} - {self.stage_name}"
+
 
 class Delivery(models.Model):
     order = models.ForeignKey(
@@ -109,8 +135,16 @@ class Delivery(models.Model):
     )
     pickup_date = models.DateTimeField(null=True, blank=True)
     delivery_date = models.DateTimeField(null=True, blank=True)
+
     delivery_status = models.CharField(
         max_length=50,
+        choices=[
+            ('Scheduled', 'Scheduled'),
+            ('Picked Up', 'Picked Up'),
+            ('In Transit', 'In Transit'),
+            ('Delivered', 'Delivered'),
+            ('Cancelled', 'Cancelled'),
+        ],
         default='Scheduled'
     )
     address = models.ForeignKey(
@@ -121,6 +155,7 @@ class Delivery(models.Model):
 
     def __str__(self):
         return f"Delivery for Order #{self.order.id}"
+
 
 class Payment(models.Model):
     order = models.ForeignKey(
@@ -147,7 +182,6 @@ class Payment(models.Model):
         decimal_places=2,
         default=0
     )
-    
     payment_status = models.CharField(
         max_length=50,
         choices=[
@@ -164,6 +198,7 @@ class Payment(models.Model):
 
     def __str__(self):
         return f"Payment for Order #{self.order.id}"
+
 
 class Notification(models.Model):
     user = models.ForeignKey(

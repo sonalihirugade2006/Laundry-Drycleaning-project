@@ -43,12 +43,11 @@
             <p>
                 Place a new laundry or dry-cleaning order.
             </p>
+        
 
             <a href="/place-order/">Place Order</a>
-
         </div>
-
-
+            
         <div class="dashboard-card">
 
             <h3>My Orders</h3>
@@ -73,6 +72,21 @@
             <a href="/profile/">My Profile</a>
 
         </div>
+        
+        <div class="dashboard-card">
+
+            <h3>My Notifications</h3>
+
+            {% if unread_count > 0 %}
+                <p>You have {{ unread_count }} unread notification(s).</p>
+            {% else %}
+                <p>You have no unread notifications.</p>
+            {% endif %}
+
+            <a href="/my-notifications/">View Notifications</a>
+
+        </div>
+
 
     </div>
 

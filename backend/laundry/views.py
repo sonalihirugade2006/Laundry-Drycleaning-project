@@ -3,8 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from .models import Customer, Address, Service, Order, OrderItem, ProcessingStage, Delivery, Payment
-
+from .models import Customer, Address, Service, Order, OrderItem, ProcessingStage, Delivery, Payment, Notification
 
 def home(request):
     return render(request, 'laundry/home.html')
@@ -54,6 +53,25 @@ def place_order(request):
             special_instructions=special_instructions,
             total_amount=total_amount
         )
+        
+        stage_names = [
+            'Received',
+            'Sorting',
+            'Washing',
+            'Drying',
+            'Ironing',
+            'Quality Check',
+            'Ready',
+            'Delivered'
+        ]
+
+        for stage_name in stage_names:
+            ProcessingStage.objects.create(
+                order=order,
+                stage_name=stage_name,
+                status='Pending'
+            )
+
 
         OrderItem.objects.create(
             order=order,
@@ -71,6 +89,12 @@ def place_order(request):
             advance_amount=0,
             pending_amount=total_amount,
             payment_status='Pending'
+        )
+        Notification.objects.create(
+            user=request.user,
+            order=order,
+            message=f"Your Order #{order.id} has been received successfully.",
+            notification_type='Order Received'
         )
 
         return redirect('/dashboard/')
@@ -149,9 +173,22 @@ def login_view(request):
         )
        
     return render(request, 'laundry/login.html')
+
 @login_required
 def dashboard(request):
-    return render(request, 'laundry/dashboard.html')
+    unread_count = Notification.objects.filter(
+        user=request.user,
+        is_read=False
+    ).count()
+
+    return render(
+        request,
+        'laundry/dashboard.html',
+        {
+            'unread_count': unread_count
+        }
+    )
+
 
 @login_required
 def my_orders(request):
@@ -258,3 +295,26 @@ def my_payments(request):
         'laundry/my_payments.html',
         {'payments': payments}
     )
+@login_required
+def my_notifications(request):
+    notifications = Notification.objects.filter(
+        user=request.user
+    ).select_related('order').order_by('-created_at')
+
+    return render(
+        request,
+        'laundry/my_notifications.html',
+        {'notifications': notifications}
+    )
+    
+@login_required
+def mark_notification_read(request, notification_id):
+    notification = Notification.objects.get(
+        id=notification_id,
+        user=request.user
+    )
+    notification.is_read = True
+    notification.save(update_fields=['is_read'])
+
+    return redirect('/my-notifications/')
+
