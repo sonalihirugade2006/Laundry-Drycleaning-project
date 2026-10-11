@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.decorators import login_required
@@ -73,6 +73,7 @@ def place_order(request):
             )
 
 
+        
         OrderItem.objects.create(
             order=order,
             service=service,
@@ -80,6 +81,12 @@ def place_order(request):
             quantity=quantity,
             condition=condition,
             price_at_order=service.price_per_item
+        )
+
+        Delivery.objects.create(
+            order=order,
+            address=address,
+            delivery_status='Scheduled'
         )
 
         Payment.objects.create(
@@ -90,6 +97,8 @@ def place_order(request):
             pending_amount=total_amount,
             payment_status='Pending'
         )
+
+
         Notification.objects.create(
             user=request.user,
             order=order,
@@ -233,19 +242,28 @@ def order_tracking(request, order_id):
 def profile(request):
 
     customer = Customer.objects.get(user=request.user)
+    error = None
 
     if request.method == 'POST':
 
-        address_line = request.POST.get('address_line')
-        city = request.POST.get('city')
-        pincode = request.POST.get('pincode')
+        address_line = request.POST.get('address_line', '').strip()
+        city = request.POST.get('city', '').strip()
+        pincode = request.POST.get('pincode', '').strip()
 
-        Address.objects.create(
-            customer=customer,
-            address_line=address_line,
-            city=city,
-            pincode=pincode
-        )
+        if not address_line or not city or not pincode:
+            error = "All address fields are required."
+
+        elif not pincode.isdigit() or len(pincode) != 6:
+            error = "Pincode must contain exactly 6 digits."
+
+        else:
+            Address.objects.create(
+                customer=customer,
+                address_line=address_line,
+                city=city,
+                pincode=pincode
+            )
+            return redirect('profile')
 
     addresses = Address.objects.filter(customer=customer)
 
@@ -254,9 +272,27 @@ def profile(request):
         'laundry/profile.html',
         {
             'customer': customer,
-            'addresses': addresses
+            'addresses': addresses,
+            'error': error
         }
     )
+
+    
+@login_required
+def delete_address(request, address_id):
+    if request.method == 'POST':
+        customer = Customer.objects.get(user=request.user)
+
+        address = get_object_or_404(
+            Address,
+            id=address_id,
+            customer=customer
+        )
+
+        address.delete()
+
+    return redirect('profile')
+
 
 def logout_view(request):
     logout(request)

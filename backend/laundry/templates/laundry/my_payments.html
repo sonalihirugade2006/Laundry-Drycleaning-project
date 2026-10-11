@@ -54,10 +54,16 @@
                         ₹{{ payment.pending_amount }}
                     </p>
 
+                    
                     <p>
                         <strong>Payment Status:</strong>
-                        {{ payment.payment_status }}
+                        {% if payment.payment_status == 'Partial' %}
+                           Partial Payment
+                        {% else %}
+                           {{ payment.payment_status }}
+                        {% endif %}
                     </p>
+   
 
                     <p>
                         <strong>Payment Date:</strong>

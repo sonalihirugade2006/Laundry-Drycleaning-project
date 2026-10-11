@@ -16,6 +16,7 @@ from .models import (
 )
 
 
+
 class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
@@ -44,7 +45,7 @@ class PaymentForm(forms.ModelForm):
 
             if pending == 0:
                 cleaned_data['payment_status'] = 'Paid'
-            elif advance > 0 or discount > 0:
+            elif advance > 0:
                 cleaned_data['payment_status'] = 'Partial'
             else:
                 cleaned_data['payment_status'] = 'Pending'
@@ -91,33 +92,78 @@ class DeliveryForm(forms.ModelForm):
         return cleaned_data
 
 
-
 class DeliveryAdmin(admin.ModelAdmin):
     form = DeliveryForm
 
     def save_model(self, request, obj, form, change):
+        from django.utils import timezone
+
+        order = obj.order
+
+        was_delivered = False
+
+        if change and obj.pk:
+            old_delivery = Delivery.objects.filter(
+                pk=obj.pk
+            ).first()
+
+            if old_delivery:
+                was_delivered = (
+                    old_delivery.delivery_status.strip().lower()
+                    == 'delivered'
+                )
+
+        if obj.delivery_status.strip().lower() == 'delivered':
+            ready_stage = ProcessingStage.objects.filter(
+                order=order,
+                stage_name='Ready'
+            ).first()
+
+            delivered_stage = ProcessingStage.objects.filter(
+                order=order,
+                stage_name='Delivered'
+            ).first()
+
+            if not ready_stage or ready_stage.status != 'Completed':
+                raise ValidationError(
+                    'The Ready stage must be Completed before delivery.'
+                )
+
+            if not delivered_stage:
+                raise ValidationError(
+                    'Delivered processing stage was not found for this order.'
+                )
+
         super().save_model(request, obj, form, change)
 
         if obj.delivery_status.strip().lower() == 'delivered':
-            order = obj.order
+            delivered_stage.status = 'Completed'
 
-            if order.status != 'Delivered':
+            if not delivered_stage.started_at:
+                delivered_stage.started_at = timezone.now()
+
+            if not delivered_stage.completed_at:
+                delivered_stage.completed_at = timezone.now()
+
+            delivered_stage.save()
+
+            if not was_delivered and order.status != 'Delivered':
                 order.status = 'Delivered'
                 order.save(update_fields=['status'])
-
+            if not Notification.objects.filter(
+                user=order.customer.user,
+                order=order,
+                notification_type='Delivery Update'
+            ).exists():
                 Notification.objects.create(
                     user=order.customer.user,
                     order=order,
-                    message=f"Your Order #{order.id} has been delivered successfully.",
+                    message=(
+                        f"Your Order #{order.id} "
+                        "has been delivered successfully."
+                    ),
                     notification_type='Delivery Update'
                 )
-
-admin.site.register(Customer)
-admin.site.register(Address)
-admin.site.register(Service)
-admin.site.register(Order)
-admin.site.register(OrderItem)
-admin.site.register(Delivery, DeliveryAdmin)
 
 @admin.register(ProcessingStage)
 class ProcessingStageAdmin(admin.ModelAdmin):
@@ -150,3 +196,9 @@ class ProcessingStageAdmin(admin.ModelAdmin):
 
 admin.site.register(Payment, PaymentAdmin)
 admin.site.register(Notification)
+admin.site.register(Delivery, DeliveryAdmin)
+admin.site.register(Customer)
+admin.site.register(Address)
+admin.site.register(Service)
+admin.site.register(Order)
+admin.site.register(OrderItem)

@@ -33,7 +33,16 @@ class Service(models.Model):
     def __str__(self):
         return self.service_name
 
+
 class Order(models.Model):
+    STATUS_CHOICES = [
+        ('Received', 'Received'),
+        ('Processing', 'Processing'),
+        ('Ready', 'Ready'),
+        ('Delivered', 'Delivered'),
+        ('Cancelled', 'Cancelled'),
+    ]
+
     customer = models.ForeignKey(
         Customer,
         on_delete=models.CASCADE,
@@ -47,7 +56,11 @@ class Order(models.Model):
     order_date = models.DateTimeField(auto_now_add=True)
     expected_date = models.DateField()
     special_instructions = models.TextField(blank=True)
-    status = models.CharField(max_length=50, default='Received')
+    status = models.CharField(
+        max_length=50,
+        choices=STATUS_CHOICES,
+        default='Received'
+    )
     total_amount = models.DecimalField(
         max_digits=10,
         decimal_places=2,
@@ -55,7 +68,7 @@ class Order(models.Model):
     )
 
     def __str__(self):
-        return f"Order #{self.id}"    
+        return f"Order #{self.id}"
 
 
 class OrderItem(models.Model):
