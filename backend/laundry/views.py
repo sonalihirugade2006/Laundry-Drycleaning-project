@@ -3,6 +3,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.db.models import Count
+from django.db.models import Sum
+from django.contrib.auth.decorators import user_passes_test
 from .models import Customer, Address, Service, Order, OrderItem, ProcessingStage, Delivery, Payment, Notification
 
 def home(request):
@@ -19,6 +22,49 @@ def services(request):
             'services': all_services
         }
     )
+@user_passes_test(lambda user: user.is_staff)
+def daily_orders_report(request):
+    from django.db.models.functions import TruncDate
+
+    daily_orders = (
+        Order.objects
+        .annotate(order_day=TruncDate('order_date'))
+        .values('order_day')
+        .annotate(total_orders=Count('id'))
+        .order_by('-order_day')
+    )
+
+    return render(
+        request,
+        'laundry/daily_orders_report.html',
+        {
+            'daily_orders': daily_orders
+        }
+    )
+    
+@user_passes_test(lambda user: user.is_staff)
+def revenue_report(request):
+    from django.db.models import Sum
+    from decimal import Decimal
+
+    payments = Payment.objects.all()
+
+    totals = payments.aggregate(
+        total_amount=Sum('total_amount'),
+        total_discount=Sum('discount'),
+        total_advance=Sum('advance_amount'),
+        total_pending=Sum('pending_amount'),
+    )
+
+    context = {
+        'total_amount': totals['total_amount'] or Decimal('0.00'),
+        'total_discount': totals['total_discount'] or Decimal('0.00'),
+        'total_advance': totals['total_advance'] or Decimal('0.00'),
+        'total_pending': totals['total_pending'] or Decimal('0.00'),
+    }
+
+    return render(request, 'laundry/revenue_report.html', context)
+
 
 @login_required
 def place_order(request):
@@ -28,15 +74,31 @@ def place_order(request):
     services = Service.objects.all()
     addresses = Address.objects.filter(customer=customer)
 
+    
     if request.method == 'POST':
 
         service_id = request.POST.get('service')
         address_id = request.POST.get('address')
         garment_type = request.POST.get('garment_type')
-        quantity = int(request.POST.get('quantity'))
+        quantity_value = request.POST.get('quantity', '').strip()
+
+        if not quantity_value.isdigit() or int(quantity_value) < 1:
+            return render(
+                request,
+                'laundry/place_order.html',
+                {
+                    'services': services,
+                    'addresses': addresses,
+                    'error': 'Quantity must be at least 1.'
+                }
+            )
+
+        quantity = int(quantity_value)
+
         condition = request.POST.get('condition')
         expected_date = request.POST.get('expected_date')
         special_instructions = request.POST.get('special_instructions')
+
 
         service = Service.objects.get(id=service_id)
         address = Address.objects.get(

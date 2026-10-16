@@ -1,163 +1,224 @@
-{% load static %}
 
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Laundry & Dry Cleaning Services</title>
-
-    <link rel="stylesheet" href="{% static 'laundry/style.css' %}?v=2">
+    <title>LaundryCare | Fresh Clothes, Happier Days</title>
+    <link rel="stylesheet" href="{% static 'laundry/style.css' %}?v=3">
 </head>
-
 <body>
 
-    <!-- Navigation Bar -->
-    <header >
-        <h1>LaundryCare</h1>
+    <!-- Navigation -->
+    <header class="site-header">
+        <a href="{% url 'home' %}" class="brand">
+            <span class="brand-icon">🧺</span>
+            <span>LaundryCare</span>
+        </a>
 
-        <nav>
-           <a href="{% url 'home' %}">Home</a>
+        <nav class="main-nav">
+            <a href="{% url 'home' %}" class="active">Home</a>
             <a href="#services">Services</a>
             <a href="#how-it-works">How It Works</a>
             <a href="{% url 'login' %}">Login</a>
-            <a href="{% url 'register' %}">Register</a>
+            <a href="{% url 'register' %}" class="nav-register">Register</a>
         </nav>
     </header>
 
+    <main>
+        <!-- Hero Section -->
+        <section class="hero premium-hero">
+            <div class="hero-content">
+                <span class="hero-label">YOUR CLOTHES, OUR CARE</span>
 
-    <!-- Hero Section -->
-    <section class="hero">
+                <h2>Fresh Clothes,<br>
+                    <span>Happier Days.</span>
+                </h2>
 
-        <div class="hero-content">
-
-            <h2>Fresh Clothes, Hassle-Free Service</h2>
-
-            <p>
-                Professional laundry and dry-cleaning services
-                for your everyday clothing needs.
-            </p>
-
-            <a href="{% url 'place_order' %}" class="btn">Place an Order</a>
-
-        </div>
-
-    </section>
-
-
-    <!-- Services Section -->
-    <section id="services" class="services">
-
-        <h2>Our Services</h2>
-
-        <div class="service-container">
-
-            <div class="service-card">
-                <div class="feature-icon">🧺</div>
-                <h3>Washing</h3>
                 <p>
-                    Professional washing service for your everyday clothes.
+                    Professional laundry and dry-cleaning services
+                    that make your everyday life easier.
+                    We care for every garment, every time.
                 </p>
+
+                <div class="hero-actions">
+                    <a href="{% url 'place_order' %}" class="btn">
+                        Book Your Service →
+                    </a>
+                    <a href="#services" class="btn btn-outline">
+                        Explore Services
+                    </a>
+                </div>
+
+                <div class="hero-note">
+                    <span>✓</span> Quality Care
+                    <span>✓</span> Reliable Service
+                    <span>✓</span> Easy Ordering
+                </div>
             </div>
 
-            <div class="service-card">
-                <div class="feature-icon">👔</div>
-                <h3>Dry Cleaning</h3>
-                <p>
-                    Special care and cleaning for delicate garments.
-                </p>
+            <div class="hero-visual">
+                <img
+                   src="{% static 'laundry/Serene Pastel Laundry Basket Still Life.png' %}"
+                    alt="Fresh laundry and neatly folded clothes"
+                    class="hero-image"
+                >
+                <div class="floating-note">
+                    <span class="floating-icon">✨</span>
+                    <div>
+                        <strong>Fresh & Clean</strong>
+                        <p>Care in every wash</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="services premium-section">
+            <div class="section-heading">
+                <span class="section-label">WHAT WE OFFER</span>
+                <h2>Our Laundry Services</h2>
+                <p>Special care for every kind of garment.</p>
             </div>
 
-            <div class="service-card">
-                <div class="feature-icon">👕</div>
-                <h3>Ironing</h3>
-                <p>
-                    Get your clothes neatly pressed and ready to wear.
-                </p>
+            <div class="service-container">
+                <article class="service-card premium-service-card">
+                    <img
+                        src="https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?auto=format&fit=crop&w=700&q=80"
+                        alt="Freshly washed clothes"
+                        class="service-image"
+                    >
+                    <div class="service-card-content">
+                        <span class="service-number">01</span>
+                        <h3>Washing</h3>
+                        <p>Everyday clothes cleaned with care and attention.</p>
+                        <a href="{% url 'place_order' %}" class="service-link">
+                            Book a wash →
+                        </a>
+                    </div>
+                </article>
+
+                <article class="service-card premium-service-card">
+                    <img
+                        src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=700&q=80"
+                        alt="Carefully maintained clothing"
+                        class="service-image"
+                    >
+                    <div class="service-card-content">
+                        <span class="service-number">02</span>
+                        <h3>Dry Cleaning</h3>
+                        <p>Thoughtful cleaning for delicate and special garments.</p>
+                        <a href="{% url 'place_order' %}" class="service-link">
+                            Explore care →
+                        </a>
+                    </div>
+                </article>
+
+                <article class="service-card premium-service-card">
+                    <img
+                        src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=700&q=80"
+                        alt="Neatly arranged clothes"
+                        class="service-image"
+                    >
+                    <div class="service-card-content">
+                        <span class="service-number">03</span>
+                        <h3>Ironing</h3>
+                        <p>Neatly pressed clothes, ready for your day.</p>
+                        <a href="{% url 'place_order' %}" class="service-link">
+                            Book ironing →
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section id="how-it-works" class="how-it-works premium-section">
+            <div class="section-heading">
+                <span class="section-label">SIMPLE & CONVENIENT</span>
+                <h2>How It Works</h2>
+                <p>Clean clothes in three easy steps.</p>
             </div>
 
-        </div>
+            <div class="steps">
+                <article class="step premium-step">
+                    <div class="step-icon">📋</div>
+                    <span class="step-number">STEP 01</span>
+                    <h3>Place Your Order</h3>
+                    <p>Choose your service and submit your laundry order online.</p>
+                </article>
 
-    </section>
+                <article class="step premium-step">
+                    <div class="step-icon">🧼</div>
+                    <span class="step-number">STEP 02</span>
+                    <h3>We Care & Clean</h3>
+                    <p>Our process takes your garments through the required cleaning stages.</p>
+                </article>
 
+                <article class="step premium-step">
+                    <div class="step-icon">🚚</div>
+                    <span class="step-number">STEP 03</span>
+                    <h3>Ready for You</h3>
+                    <p>Track your order and receive your clean clothes when ready.</p>
+                </article>
+            </div>
+        </section>
 
-    <!-- How It Works -->
-    <section id="how-it-works" class="how-it-works">
-
-        <h2>How It Works</h2>
-
-        <div class="steps">
-
-            <div class="step">
-                
-            <div class="feature-icon">📋</div>
-                <h3>1. Place Order</h3>
-                <p>Select your required laundry services.</p>
+        <!-- Why Choose Us -->
+        <section class="why-us premium-section">
+            <div class="section-heading">
+                <span class="section-label">THE LAUNDRYCARE PROMISE</span>
+                <h2>Why Choose Us?</h2>
+                <p>Good care, easy ordering and dependable service.</p>
             </div>
 
-            <div class="step">
-                
-            <div class="feature-icon">⚙️</div>
-                <h3>2. We Process</h3>
-                <p>Your clothes go through the required cleaning stages.</p>
+            <div class="why-container">
+                <article class="benefit-card">
+                    <div class="benefit-icon">🛡️</div>
+                    <h3>Quality Care</h3>
+                    <p>We treat your garments with attention and care.</p>
+                </article>
+
+                <article class="benefit-card">
+                    <div class="benefit-icon">⚡</div>
+                    <h3>Easy Ordering</h3>
+                    <p>Place your order through a simple online process.</p>
+                </article>
+
+                <article class="benefit-card">
+                    <div class="benefit-icon">📦</div>
+                    <h3>Order Tracking</h3>
+                    <p>Keep track of your order as it moves through the process.</p>
+                </article>
             </div>
+        </section>
 
-            <div class="step">
-                
-            <div class="feature-icon">🚚</div>
-                <h3>3. Get Delivery</h3>
-                <p>Receive your clean and ready clothes.</p>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- Why Choose Us -->
-    <section class="why-us">
-
-        <h2>Why Choose Us?</h2>
-
-        <div class="why-container">
-
+        <!-- Call to Action -->
+        <section class="home-cta">
             <div>
-                
-        <div class="feature-icon">🛡️</div>
-                <h3>Quality Service</h3>
-                <p>Professional care for your garments.</p>
+                <span class="section-label">A LITTLE MORE CONVENIENCE</span>
+                <h2>Your laundry day, made easier.</h2>
+                <p>Give your clothes the care they deserve.</p>
             </div>
-
-            <div>
-                        
-        <div class="feature-icon">⚡</div>
-                <h3>Easy Ordering</h3>
-                <p>Simple and convenient order process.</p>
-            </div>
-
-            <div>
-                
-        <div class="feature-icon">🚚</div>
-                <h3>Reliable Delivery</h3>
-                <p>Track your order from processing to delivery.</p>
-            </div>
-
-        </div>
-
-    </section>
-
+            <a href="{% url 'place_order' %}" class="btn cta-btn">
+                Place an Order →
+            </a>
+        </section>
+    </main>
 
     <!-- Footer -->
-    <footer>
-
-        <p>
-            © 2026 LaundryCare. All Rights Reserved.
-        </p>
-
+    <footer class="premium-footer">
+        <a href="{% url 'home' %}" class="footer-brand">LaundryCare</a>
+        <p>Clean clothes. More time for what matters.</p>
+        <div class="footer-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="#services">Services</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="{% url 'login' %}">Login</a>
+        </div>
+        <p class="copyright">© 2026 LaundryCare. All Rights Reserved.</p>
     </footer>
 
 </body>
-
 </html>

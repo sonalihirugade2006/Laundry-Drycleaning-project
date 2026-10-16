@@ -9,15 +9,15 @@
 
     <title>Dashboard - LaundryCare</title>
 
-    <link rel="stylesheet" href="{% static 'laundry/style.css' %}?v=5">
+    <link rel="stylesheet" href="{% static 'laundry/style.css' %}?v=10">
 </head>
 
 <body>
 
-<header>
-    <h1>LaundryCare</h1>
+<header class="site-header">
+    <h1 class="brand">LaundryCare</h1>
 
-    <nav>
+    <nav class="main-nav">
         <a href="/">Home</a>
         <a href="/dashboard/">Dashboard</a>
         <a href="/services/">Services</a>
@@ -104,13 +104,47 @@
             <h3>My Deliveries</h3>
 
             <p>
-                Check your pickup and delivery status.
+                View your pickup and delivery information.
             </p>
 
             <a href="/my-deliveries/">View Deliveries</a>
 
         </div>
 
+        
+        {% if request.user.is_staff %}
+
+        <div class="dashboard-card">
+
+            <h3>Daily Orders Report</h3>
+
+            <p>
+                View the number of orders received each day.
+            </p>
+
+            <a href="{% url 'daily_orders_report' %}">
+                View Orders Report
+            </a>
+
+        </div>
+
+        <div class="dashboard-card">
+
+            <h3>Revenue Report</h3>
+
+            <p>
+                View total amount, discounts, advance payments and pending amounts.
+            </p>
+
+            <a href="{% url 'revenue_report' %}">
+                View Revenue Report
+            </a>
+
+        </div>
+
+        {% endif %}
+
+        
 
 
     </div>

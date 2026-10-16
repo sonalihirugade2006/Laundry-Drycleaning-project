@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Orders Report | LaundryCare</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f6f8;
+            margin: 0;
+            padding: 25px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background: #eeeeee;
+        }
+
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 12px;
+                overflow-x: auto;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Daily Orders Report</h1>
+        <p class="subtitle">LaundryCare Management System</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Sr. No.</th>
+                    <th>Order Date</th>
+                    <th>Total Orders</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in daily_orders %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ item.order_day|date:"d-m-Y" }}</td>
+                    <td>{{ item.total_orders }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="empty">
+                        No orders found.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{% url 'dashboard' %}" class="back-link">
+            &larr; Back to Dashboard
+        </a>
+    </div>
+</body>
+</html>

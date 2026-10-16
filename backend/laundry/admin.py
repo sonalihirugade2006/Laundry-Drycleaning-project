@@ -133,6 +133,9 @@ class DeliveryAdmin(admin.ModelAdmin):
                 raise ValidationError(
                     'Delivered processing stage was not found for this order.'
                 )
+                if obj.delivery_status.strip().lower() == 'delivered':
+                    if not obj.delivery_date:
+                        obj.delivery_date = timezone.now()
 
         super().save_model(request, obj, form, change)
 
@@ -200,5 +203,18 @@ admin.site.register(Delivery, DeliveryAdmin)
 admin.site.register(Customer)
 admin.site.register(Address)
 admin.site.register(Service)
-admin.site.register(Order)
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'customer',
+        'order_date',
+        'expected_date',
+        'status',
+        'total_amount',
+    )
+    list_filter = ('status', 'order_date', 'expected_date')
+    search_fields = ('customer__name', 'customer__user__username')
+
 admin.site.register(OrderItem)
