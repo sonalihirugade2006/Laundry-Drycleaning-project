@@ -25,33 +25,26 @@ class PaymentForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
 
-        total = cleaned_data.get('total_amount')
-        discount = cleaned_data.get('discount') or 0
-        advance = cleaned_data.get('advance_amount') or 0
+        total_amount = cleaned_data.get('total_amount')
+        discount = cleaned_data.get('discount')
+        advance_amount = cleaned_data.get('advance_amount')
 
-        if total is not None:
-            if discount < 0 or advance < 0:
+        if (
+            total_amount is not None
+            and discount is not None
+            and advance_amount is not None
+        ):
+            if discount < 0 or advance_amount < 0:
                 raise ValidationError(
                     'Discount and advance amount cannot be negative.'
                 )
 
-            if discount + advance > total:
+            if discount + advance_amount > total_amount:
                 raise ValidationError(
-                    'Discount and advance cannot exceed the total amount.'
+                    'Discount and advance amount cannot exceed total amount.'
                 )
 
-            pending = total - discount - advance
-            cleaned_data['pending_amount'] = pending
-
-            if pending == 0:
-                cleaned_data['payment_status'] = 'Paid'
-            elif advance > 0:
-                cleaned_data['payment_status'] = 'Partial'
-            else:
-                cleaned_data['payment_status'] = 'Pending'
-
         return cleaned_data
-
 
 
 class PaymentAdmin(admin.ModelAdmin):
@@ -83,11 +76,16 @@ class DeliveryForm(forms.ModelForm):
             order
             and delivery_status
             and delivery_status.strip().lower() == 'delivered'
-            and order.status.strip().lower() not in ['ready', 'delivered']
         ):
-            raise ValidationError(
-                'The order must be Ready before delivery can be completed.'
-            )
+            ready_stage = ProcessingStage.objects.filter(
+                order=order,
+                stage_name='Ready'
+            ).first()
+
+            if not ready_stage or ready_stage.status != 'Completed':
+                raise ValidationError(
+                    'The Ready stage must be Completed before delivery.'
+                )
 
         return cleaned_data
 
@@ -133,10 +131,9 @@ class DeliveryAdmin(admin.ModelAdmin):
                 raise ValidationError(
                     'Delivered processing stage was not found for this order.'
                 )
-                if obj.delivery_status.strip().lower() == 'delivered':
-                    if not obj.delivery_date:
-                        obj.delivery_date = timezone.now()
 
+            if not obj.delivery_date:
+                obj.delivery_date = timezone.now()
         super().save_model(request, obj, form, change)
 
         if obj.delivery_status.strip().lower() == 'delivered':

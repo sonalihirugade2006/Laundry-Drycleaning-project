@@ -127,12 +127,14 @@ def place_order(request):
             'Delivered'
         ]
 
-        for stage_name in stage_names:
+        
+        for index, stage_name in enumerate(stage_names):
             ProcessingStage.objects.create(
                 order=order,
                 stage_name=stage_name,
-                status='Pending'
+                status='Completed' if index == 0 else 'Pending'
             )
+
 
 
         
