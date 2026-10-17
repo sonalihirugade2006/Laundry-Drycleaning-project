@@ -5,6 +5,8 @@ from django.urls import path
 from laundry.api_views import services_api
 from laundry.views import (
     home,
+    csrf_token_view,
+    customer_addresses_api,
     register,
     login_view,
     dashboard,
@@ -13,6 +15,7 @@ from laundry.views import (
     delete_address,
     services,
     place_order,
+    create_order_api,
     my_orders,
     order_tracking,
     my_deliveries,
@@ -25,6 +28,8 @@ from laundry.views import (
 
 
 urlpatterns = [
+    path('api/csrf/', csrf_token_view, name='csrf_token'),
+    path('api/addresses/', customer_addresses_api, name='customer_addresses_api'),
     path('admin/', admin.site.urls),
     path('', home, name='home'),
     path('register/', register, name='register'),
@@ -90,4 +95,9 @@ urlpatterns = [
         name='password_reset_complete',
     ),
     path('api/services/', services_api, name='services_api'),
+    path(
+    'api/orders/',
+    create_order_api,
+    name='create_order_api'
+    ),
 ]

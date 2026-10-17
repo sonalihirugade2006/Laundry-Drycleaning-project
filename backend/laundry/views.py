@@ -7,6 +7,31 @@ from django.db.models import Count
 from django.db.models import Sum
 from django.contrib.auth.decorators import user_passes_test
 from .models import Customer, Address, Service, Order, OrderItem, ProcessingStage, Delivery, Payment, Notification
+from django.http import JsonResponse
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.db import transaction
+from django.views.decorators.http import require_POST
+@ensure_csrf_cookie
+def csrf_token_view(request):
+    return JsonResponse({"message": "CSRF cookie set"})
+
+@login_required
+def customer_addresses_api(request):
+    customer = Customer.objects.get(user=request.user)
+
+    addresses = Address.objects.filter(customer=customer)
+
+    data = [
+        {
+            "id": address.id,
+            "address_line": address.address_line,
+            "city": address.city,
+            "pincode": address.pincode,
+        }
+        for address in addresses
+    ]
+
+    return JsonResponse(data, safe=False)
 
 def home(request):
     return render(request, 'laundry/home.html')
@@ -180,6 +205,134 @@ def place_order(request):
             'addresses': addresses
         }
     )
+
+@login_required
+@require_POST
+def create_order_api(request):
+    try:
+        service_id = request.POST.get('service', '')
+        address_id = request.POST.get('address', '')
+        garment_type = request.POST.get('garment_type', '').strip()
+        quantity_value = request.POST.get('quantity', '').strip()
+        expected_date = request.POST.get('expected_date', '').strip()
+
+        if not service_id.isdigit() or not address_id.isdigit():
+            return JsonResponse(
+                {'error': 'Please select a valid service and address.'},
+                status=400
+            )
+
+        if not quantity_value.isdigit():
+            return JsonResponse(
+                {'error': 'Quantity must be a whole number.'},
+                status=400
+            )
+
+        quantity = int(quantity_value)
+
+        if not 1 <= quantity <= 100:
+            return JsonResponse(
+                {'error': 'Quantity must be between 1 and 100.'},
+                status=400
+            )
+
+        if not garment_type or len(garment_type) > 100:
+            return JsonResponse(
+                {'error': 'Please enter a valid garment type.'},
+                status=400
+            )
+
+        from datetime import date
+
+        try:
+            parsed_date = date.fromisoformat(expected_date)
+        except ValueError:
+            return JsonResponse(
+                {'error': 'Please select a valid expected date.'},
+                status=400
+            )
+
+        if parsed_date < date.today():
+            return JsonResponse(
+                {'error': 'Expected date cannot be in the past.'},
+                status=400
+            )
+
+        customer = get_object_or_404(Customer, user=request.user)
+        service = get_object_or_404(Service, pk=int(service_id))
+        address = get_object_or_404(
+            Address,
+            pk=int(address_id),
+            customer=customer
+        )
+
+        total_amount = service.price_per_item * quantity
+
+        with transaction.atomic():
+            order = Order.objects.create(
+                customer=customer,
+                address=address,
+                expected_date=parsed_date,
+                special_instructions='',
+                total_amount=total_amount
+            )
+
+            stage_names = [
+                'Received', 'Sorting', 'Washing', 'Drying',
+                'Ironing', 'Quality Check', 'Ready', 'Delivered'
+            ]
+
+            for index, stage_name in enumerate(stage_names):
+                ProcessingStage.objects.create(
+                    order=order,
+                    stage_name=stage_name,
+                    status='Completed' if index == 0 else 'Pending'
+                )
+
+            OrderItem.objects.create(
+                order=order,
+                service=service,
+                garment_type=garment_type,
+                quantity=quantity,
+                condition='',
+                price_at_order=service.price_per_item
+            )
+
+            Delivery.objects.create(
+                order=order,
+                address=address,
+                delivery_status='Scheduled'
+            )
+
+            Payment.objects.create(
+                order=order,
+                total_amount=total_amount,
+                discount=0,
+                advance_amount=0,
+                pending_amount=total_amount,
+                payment_status='Pending'
+            )
+
+            Notification.objects.create(
+                user=request.user,
+                order=order,
+                message=(
+                    f'Your Order #{order.id} has been received successfully.'
+                ),
+                notification_type='Order Received'
+            )
+
+        return JsonResponse({
+            'message': 'Order placed successfully!',
+            'order_id': order.id,
+            'total_amount': str(total_amount),
+        }, status=201)
+
+    except Exception:
+        return JsonResponse(
+            {'error': 'Unable to place the order. Please try again.'},
+            status=500
+        )
 
 
 def register(request):

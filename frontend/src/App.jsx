@@ -1,10 +1,12 @@
 
 import { useEffect, useState } from 'react'
+import OrderBooking from './OrderBooking.jsx'
 
 function App() {
   const [services, setServices] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [showBooking, setShowBooking] = useState(false)
 
   useEffect(() => {
     fetch('http://127.0.0.1:8000/api/services/')
@@ -20,6 +22,9 @@ function App() {
       })
       .finally(() => setLoading(false))
   }, [])
+    if (showBooking) {
+    return <OrderBooking />
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800">
@@ -30,6 +35,13 @@ function App() {
           </a>
 
           <div className="flex items-center gap-5">
+            <button
+              type="button"
+              onClick={() => setShowBooking(true)}
+              className="rounded-lg bg-purple-100 px-5 py-2.5 text-sm font-semibold text-purple-800 hover:bg-purple-200"
+            >
+              Book Now
+            </button>
             <a href="#services" className="hidden text-sm font-medium hover:text-purple-700 sm:block">
               Services
             </a>
