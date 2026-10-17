@@ -91,30 +91,28 @@ def revenue_report(request):
     return render(request, 'laundry/revenue_report.html', context)
 
 
+
 @login_required
 def place_order(request):
-
     customer = Customer.objects.get(user=request.user)
 
     services = Service.objects.all()
     addresses = Address.objects.filter(customer=customer)
 
-    
     if request.method == 'POST':
-
         service_id = request.POST.get('service')
         address_id = request.POST.get('address')
         garment_type = request.POST.get('garment_type')
         quantity_value = request.POST.get('quantity', '').strip()
 
-        if not quantity_value.isdigit() or int(quantity_value) < 1:
+        if not quantity_value.isdigit() or not 1 <= int(quantity_value) <= 100:
             return render(
                 request,
                 'laundry/place_order.html',
                 {
                     'services': services,
                     'addresses': addresses,
-                    'error': 'Quantity must be at least 1.'
+                    'error': 'Quantity must be between 1 and 100.'
                 }
             )
 
@@ -123,7 +121,6 @@ def place_order(request):
         condition = request.POST.get('condition')
         expected_date = request.POST.get('expected_date')
         special_instructions = request.POST.get('special_instructions')
-
 
         service = Service.objects.get(id=service_id)
         address = Address.objects.get(
@@ -140,7 +137,7 @@ def place_order(request):
             special_instructions=special_instructions,
             total_amount=total_amount
         )
-        
+
         stage_names = [
             'Received',
             'Sorting',
@@ -152,7 +149,6 @@ def place_order(request):
             'Delivered'
         ]
 
-        
         for index, stage_name in enumerate(stage_names):
             ProcessingStage.objects.create(
                 order=order,
@@ -160,9 +156,6 @@ def place_order(request):
                 status='Completed' if index == 0 else 'Pending'
             )
 
-
-
-        
         OrderItem.objects.create(
             order=order,
             service=service,
@@ -186,7 +179,6 @@ def place_order(request):
             pending_amount=total_amount,
             payment_status='Pending'
         )
-
 
         Notification.objects.create(
             user=request.user,
