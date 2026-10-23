@@ -17,6 +17,7 @@ from .models import (
 
 
 
+
 class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
@@ -44,7 +45,21 @@ class PaymentForm(forms.ModelForm):
                     'Discount and advance amount cannot exceed total amount.'
                 )
 
+            pending_amount = (
+                total_amount - discount - advance_amount
+            )
+            cleaned_data['pending_amount'] = pending_amount
+
+            if pending_amount == 0:
+                cleaned_data['payment_status'] = 'Paid'
+            elif advance_amount > 0 or discount > 0:
+                cleaned_data['payment_status'] = 'Partial'
+            else:
+                cleaned_data['payment_status'] = 'Pending'
+
         return cleaned_data
+
+
 
 
 class PaymentAdmin(admin.ModelAdmin):
@@ -53,13 +68,23 @@ class PaymentAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         from django.utils import timezone
 
-        if obj.payment_status == 'Paid':
+        obj.pending_amount = (
+            obj.total_amount - obj.discount - obj.advance_amount
+        )
+
+        if obj.pending_amount == 0:
+            obj.payment_status = 'Paid'
             if not obj.payment_date:
                 obj.payment_date = timezone.now()
+        elif obj.advance_amount > 0 or obj.discount > 0:
+            obj.payment_status = 'Partial'
+            obj.payment_date = None
         else:
+            obj.payment_status = 'Pending'
             obj.payment_date = None
 
         super().save_model(request, obj, form, change)
+
 
 class DeliveryForm(forms.ModelForm):
     class Meta:

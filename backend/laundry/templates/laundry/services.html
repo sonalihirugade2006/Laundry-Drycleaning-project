@@ -9,7 +9,7 @@
 
     <title>Our Services - LaundryCare</title>
 
-    <link rel="stylesheet" href="{% static 'laundry/style.css' %}?v=3">
+    <link rel="stylesheet" href="{% static 'laundry/style.css' %}?v=4">
 </head>
 
 <body>
@@ -26,9 +26,25 @@
     </header>
 
 
+    
     <main class="services-page">
 
-        <h2>Our Services</h2>
+        {% if user.is_authenticated %}
+            <div style="text-align: left; max-width: 990px; margin: 0 auto 20px;">
+                <a href="/dashboard/" style="
+                    display: inline-block;
+                    padding: 10px 18px;
+                    background-color: #145c48;
+                    color: #ffffff;
+                    border: 1px solid #145c48;
+                    border-radius: 8px;
+                    text-decoration: none;
+                    font-weight: 600;
+                ">← Back to Dashboard</a>
+            </div>
+        {% endif %}
+
+    <h2>Our Services</h2>
 
         <p class="services-intro">
             Choose from our professional laundry and dry-cleaning services.

@@ -10,6 +10,7 @@ from laundry.views import (
     register,
     login_view,
     dashboard,
+    admin_orders, 
     logout_view,
     profile,
     delete_address,
@@ -100,4 +101,5 @@ urlpatterns = [
     create_order_api,
     name='create_order_api'
     ),
+    path('admin-orders/', admin_orders, name='admin_orders'),
 ]

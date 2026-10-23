@@ -55,14 +55,19 @@
                     </p>
 
                     
-                    <p>
+                    
+                    <p class="payment-status-row">
                         <strong>Payment Status:</strong>
-                        {% if payment.payment_status == 'Partial' %}
-                           Partial Payment
+
+                        {% if payment.payment_status == 'Paid' %}
+                            <span class="payment-status status-paid">Paid</span>
+                        {% elif payment.payment_status == 'Partial' %}
+                            <span class="payment-status status-partial">Partial Payment</span>
                         {% else %}
-                           {{ payment.payment_status }}
+                            <span class="payment-status status-pending">{{ payment.payment_status }}</span>
                         {% endif %}
                     </p>
+
    
 
                     <p>

@@ -9,7 +9,7 @@
 
     <title>Dashboard - LaundryCare</title>
 
-    <link rel="stylesheet" href="{% static 'laundry/style.css' %}?v=10">
+    <link rel="stylesheet" href="{% static 'laundry/style.css' %}?v=11">
 </head>
 
 <body>
@@ -27,127 +27,161 @@
 </header>
 
 
-<main class="dashboard">
+<main class="dashboard dashboard-layout">
 
-    <h2>Welcome to LaundryCare</h2>
-
-    <p>Hello, {{ request.user.username }}!</p>
-
-
-    <div class="dashboard-container">
-
-        <div class="dashboard-card">
-
-            <h3>Place an Order</h3>
-
-            <p>
-                Place a new laundry or dry-cleaning order.
-            </p>
-        
-
-            <a href="/place-order/">Place Order</a>
-        </div>
-            
-        <div class="dashboard-card">
-
-            <h3>My Orders</h3>
-
-            <p>
-                View and track your laundry orders.
-            </p>
-
-            <a href="/my-orders/">View Orders</a>
-
+    <aside class="dashboard-sidebar">
+        <div class="sidebar-heading">
+            <span class="sidebar-logo">L</span>
+            <div>
+                <h2>LaundryCare</h2>
+                <p>Customer Portal</p>
+            </div>
         </div>
 
+        <p class="sidebar-label">MAIN MENU</p>
 
-        <div class="dashboard-card">
+        <nav class="sidebar-nav">
+            <a href="/" class="sidebar-link">
+                <span>⌂</span> Home
+            </a>
 
-            <h3>Profile</h3>
+            <a href="/dashboard/" class="sidebar-link active">
+                <span>▦</span> Dashboard
+            </a>
 
-            <p>
-                View and manage your account information.
-            </p>
+            <a href="/services/" class="sidebar-link">
+                <span>✧</span> Services
+            </a>
 
-            <a href="/profile/">My Profile</a>
+            <a href="/place-order/" class="sidebar-link">
+                <span>＋</span> Place an Order
+            </a>
 
-        </div>
-        
-        <div class="dashboard-card">
+            <a href="/my-orders/" class="sidebar-link">
+                <span>▤</span> My Orders
+            </a>
 
-            <h3>My Notifications</h3>
+            <a href="/profile/" class="sidebar-link">
+                <span>♙</span> Profile
+            </a>
 
-            {% if unread_count > 0 %}
-                <p>You have {{ unread_count }} unread notification(s).</p>
-            {% else %}
-                <p>You have no unread notifications.</p>
+            <a href="/my-notifications/" class="sidebar-link">
+                <span>♧</span> Notifications
+                {% if unread_count > 0 %}
+                    <span class="sidebar-badge">{{ unread_count }}</span>
+                {% endif %}
+            </a>
+
+            <a href="/my-payments/" class="sidebar-link">
+                <span>₹</span> My Payments
+            </a>
+
+            <a href="/my-deliveries/" class="sidebar-link">
+                <span>↗</span> My Deliveries
+            </a>
+
+            {% if request.user.is_staff %}
+                <p class="sidebar-label">REPORTS</p>
+
+                <a href="{% url 'daily_orders_report' %}" class="sidebar-link">
+                    <span>▥</span> Daily Orders Report
+                </a>
+
+                <a href="{% url 'revenue_report' %}" class="sidebar-link">
+                    <span>₹</span> Revenue Report
+                </a>
+                <a href="/admin-orders/" class="sidebar-link">
+                    <span>▤</span> All Orders
+                </a>
+                <a href="/admin/" class="sidebar-link" target="_blank">
+                    <span>⚙</span> Django Admin Panel
+                </a>
             {% endif %}
+        </nav>
 
-            <a href="/my-notifications/">View Notifications</a>
+        <a href="/logout/" class="sidebar-logout">
+            <span>↪</span> Logout
+        </a>
+    </aside>
 
-        </div>
-        
-        <div class="dashboard-card">
+    <section class="dashboard-main">
+        <div class="dashboard-topbar">
+            <div>
+                <p class="dashboard-eyebrow">LAUNDRYCARE / OVERVIEW</p>
+                <h1>Welcome back!</h1>
+                <p>Hello, {{ request.user.username }}. Ready for fresh, clean clothes?</p>
+            </div>
 
-            <h3>My Payments</h3>
-
-            <p>
-                View your payment details and pending balance.
-            </p>
-
-            <a href="/my-payments/">View Payments</a>
-
-        </div>
-
-        <div class="dashboard-card">
-
-            <h3>My Deliveries</h3>
-
-            <p>
-                View your pickup and delivery information.
-            </p>
-
-            <a href="/my-deliveries/">View Deliveries</a>
-
-        </div>
-
-        
-        {% if request.user.is_staff %}
-
-        <div class="dashboard-card">
-
-            <h3>Daily Orders Report</h3>
-
-            <p>
-                View the number of orders received each day.
-            </p>
-
-            <a href="{% url 'daily_orders_report' %}">
-                View Orders Report
-            </a>
-
+            <div class="dashboard-user">
+                <span class="user-avatar">
+                    {{ request.user.username|first|upper }}
+                </span>
+                <div>
+                    <strong>{{ request.user.username }}</strong>
+                    <small>
+                        {% if request.user.is_staff %}
+                            Staff Account
+                        {% else %}
+                            Customer Account
+                        {% endif %}
+                    </small>
+                </div>
+            </div>
         </div>
 
-        <div class="dashboard-card">
-
-            <h3>Revenue Report</h3>
-
-            <p>
-                View total amount, discounts, advance payments and pending amounts.
-            </p>
-
-            <a href="{% url 'revenue_report' %}">
-                View Revenue Report
-            </a>
-
+        <div class="dashboard-welcome">
+            <div>
+                <p class="welcome-tag">YOUR LAUNDRY, SIMPLIFIED</p>
+                <h2>Care in every wash.</h2>
+                <p>Manage your orders, payments and deliveries in one place.</p>
+                <a href="/place-order/" class="welcome-button">＋ Place an Order</a>
+            </div>
+            <div class="welcome-decoration">✦</div>
         </div>
 
-        {% endif %}
+        <div class="dashboard-section-heading">
+            <div>
+                <h2>Your Services</h2>
+                <p>Everything you need to manage your laundry.</p>
+            </div>
+        </div>
 
-        
+        <div class="dashboard-container">
+            <div class="dashboard-card">
+                <h3>My Orders</h3>
+                <p>View and track your laundry orders.</p>
+                <a href="/my-orders/">View Orders →</a>
+            </div>
 
+            <div class="dashboard-card">
+                <h3>My Profile</h3>
+                <p>View and manage your account information.</p>
+                <a href="/profile/">My Profile →</a>
+            </div>
 
-    </div>
+            <div class="dashboard-card">
+                <h3>My Notifications</h3>
+                {% if unread_count > 0 %}
+                    <p>You have {{ unread_count }} unread notification(s).</p>
+                {% else %}
+                    <p>You have no unread notifications.</p>
+                {% endif %}
+                <a href="/my-notifications/">View Notifications →</a>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>My Payments</h3>
+                <p>View your payment details and pending balance.</p>
+                <a href="/my-payments/">View Payments →</a>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>My Deliveries</h3>
+                <p>View your pickup and delivery information.</p>
+                <a href="/my-deliveries/">View Deliveries →</a>
+            </div>
+        </div>
+    </section>
 
 </main>
 

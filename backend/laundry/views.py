@@ -11,6 +11,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.db import transaction
 from django.views.decorators.http import require_POST
+from datetime import date
 @ensure_csrf_cookie
 def csrf_token_view(request):
     return JsonResponse({"message": "CSRF cookie set"})
@@ -91,112 +92,116 @@ def revenue_report(request):
     return render(request, 'laundry/revenue_report.html', context)
 
 
-
 @login_required
 def place_order(request):
-    customer = Customer.objects.get(user=request.user)
+    from datetime import date
 
+    customer = Customer.objects.get(user=request.user)
     services = Service.objects.all()
     addresses = Address.objects.filter(customer=customer)
+    today = date.today()
 
     if request.method == 'POST':
         service_id = request.POST.get('service')
         address_id = request.POST.get('address')
         garment_type = request.POST.get('garment_type')
         quantity_value = request.POST.get('quantity', '').strip()
-
-        if not quantity_value.isdigit() or not 1 <= int(quantity_value) <= 100:
-            return render(
-                request,
-                'laundry/place_order.html',
-                {
-                    'services': services,
-                    'addresses': addresses,
-                    'error': 'Quantity must be between 1 and 100.'
-                }
-            )
-
-        quantity = int(quantity_value)
-
         condition = request.POST.get('condition')
         expected_date = request.POST.get('expected_date')
         special_instructions = request.POST.get('special_instructions')
 
-        service = Service.objects.get(id=service_id)
-        address = Address.objects.get(
-            id=address_id,
-            customer=customer
+        if not quantity_value.isdigit() or not 1 <= int(quantity_value) <= 100:
+            return render(request, 'laundry/place_order.html', {
+                'services': services,
+                'addresses': addresses,
+                'today': today,
+                'error': 'Quantity must be between 1 and 100.'
+            })
+
+        try:
+            parsed_date = date.fromisoformat(expected_date)
+        except (ValueError, TypeError):
+            return render(request, 'laundry/place_order.html', {
+                'services': services,
+                'addresses': addresses,
+                'today': today,
+                'error': 'Please select a valid expected delivery date.'
+            })
+
+        if parsed_date < today:
+            return render(request, 'laundry/place_order.html', {
+                'services': services,
+                'addresses': addresses,
+                'today': today,
+                'error': 'Expected delivery date cannot be in the past.'
+            })
+
+        service = get_object_or_404(Service, id=service_id)
+        address = get_object_or_404(
+            Address, id=address_id, customer=customer
         )
 
-        total_amount = service.price_per_item * quantity
+        total_amount = service.price_per_item * int(quantity_value)
 
-        order = Order.objects.create(
-            customer=customer,
-            address=address,
-            expected_date=expected_date,
-            special_instructions=special_instructions,
-            total_amount=total_amount
-        )
-
-        stage_names = [
-            'Received',
-            'Sorting',
-            'Washing',
-            'Drying',
-            'Ironing',
-            'Quality Check',
-            'Ready',
-            'Delivered'
-        ]
-
-        for index, stage_name in enumerate(stage_names):
-            ProcessingStage.objects.create(
-                order=order,
-                stage_name=stage_name,
-                status='Completed' if index == 0 else 'Pending'
+        with transaction.atomic():
+            order = Order.objects.create(
+                customer=customer,
+                address=address,
+                expected_date=parsed_date,
+                special_instructions=special_instructions,
+                total_amount=total_amount
             )
 
-        OrderItem.objects.create(
-            order=order,
-            service=service,
-            garment_type=garment_type,
-            quantity=quantity,
-            condition=condition,
-            price_at_order=service.price_per_item
-        )
+            stage_names = [
+                'Received', 'Sorting', 'Washing', 'Drying',
+                'Ironing', 'Quality Check', 'Ready', 'Delivered'
+            ]
 
-        Delivery.objects.create(
-            order=order,
-            address=address,
-            delivery_status='Scheduled'
-        )
+            for index, stage_name in enumerate(stage_names):
+                ProcessingStage.objects.create(
+                    order=order,
+                    stage_name=stage_name,
+                    status='Completed' if index == 0 else 'Pending'
+                )
 
-        Payment.objects.create(
-            order=order,
-            total_amount=total_amount,
-            discount=0,
-            advance_amount=0,
-            pending_amount=total_amount,
-            payment_status='Pending'
-        )
+            OrderItem.objects.create(
+                order=order,
+                service=service,
+                garment_type=garment_type,
+                quantity=int(quantity_value),
+                condition=condition,
+                price_at_order=service.price_per_item
+            )
 
-        Notification.objects.create(
-            user=request.user,
-            order=order,
-            message=f"Your Order #{order.id} has been received successfully.",
-            notification_type='Order Received'
-        )
+            Delivery.objects.create(
+                order=order,
+                address=address,
+                delivery_status='Scheduled'
+            )
+
+            Payment.objects.create(
+                order=order,
+                total_amount=total_amount,
+                discount=0,
+                advance_amount=0,
+                pending_amount=total_amount,
+                payment_status='Pending'
+            )
+
+            Notification.objects.create(
+                user=request.user,
+                order=order,
+                message=f"Your Order #{order.id} has been received successfully.",
+                notification_type='Order Received'
+            )
 
         return redirect('/dashboard/')
 
-    return render(
-        request,
-        'laundry/place_order.html',
-        {
-            'services': services,
-            'addresses': addresses
-        }
-    )
+    return render(request, 'laundry/place_order.html', {
+        'services': services,
+        'addresses': addresses,
+        'today': today
+    })
 
 @login_required
 @require_POST
@@ -391,6 +396,20 @@ def login_view(request):
         )
        
     return render(request, 'laundry/login.html')
+@user_passes_test(lambda user: user.is_staff)
+def admin_orders(request):
+    orders = Order.objects.all().select_related(
+        'customer',
+        'address'
+    ).order_by('-order_date')
+
+    return render(
+        request,
+        'laundry/admin_orders.html',
+        {
+            'orders': orders
+        }
+    )
 
 @login_required
 def dashboard(request):
@@ -437,13 +456,17 @@ def order_tracking(request, order_id):
     stages = ProcessingStage.objects.filter(
         order=order
     ).order_by('id')
+    delivery = Delivery.objects.filter(
+        order=order
+    ).first()
 
     return render(
         request,
         'laundry/order_tracking.html',
         {
             'order': order,
-            'stages': stages
+            'stages': stages,
+            'delivery': delivery
         }
     )
 

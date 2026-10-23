@@ -108,7 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -120,12 +120,12 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+
 # Email
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
-    },
-}
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+DEFAULT_FROM_EMAIL = 'noreply@laundrycare.com'
+
 
 DEFAULT_FROM_EMAIL = 'noreply@laundrycare.com'
 LOGIN_URL = '/login/'

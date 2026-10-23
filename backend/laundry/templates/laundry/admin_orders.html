@@ -1,0 +1,267 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>All Orders - LaundryCare</title>
+
+    <link rel="stylesheet" href="{% static 'laundry/style.css' %}?v=12">
+
+    <style>
+        .orders-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 10px;
+        }
+
+        .orders-table {
+            width: 100%;
+            min-width: 900px;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .orders-table th {
+            padding: 16px 14px;
+            white-space: nowrap;
+            font-size: 14px;
+            font-weight: 600;
+            border-bottom: 1px solid #dfe7e3;
+            background: #f4f8f6;
+        }
+
+        .orders-table td {
+            padding: 16px 14px;
+            white-space: nowrap;
+            font-size: 14px;
+            border-bottom: 1px solid #e8eeeb;
+        }
+
+        .orders-table tbody tr:hover {
+            background: #f5fbf8;
+        }
+
+        .order-id {
+            font-weight: 600;
+        }
+
+        .order-status {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            background: #e8f7ef;
+            color: #16784a;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .orders-card {
+            padding: 18px;
+        }
+
+        .orders-empty {
+            padding: 28px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .orders-card {
+                padding: 10px;
+            }
+        }
+        .dashboard-main .dashboard-card.all-orders-card {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            padding: 18px;
+            box-sizing: border-box;
+        }
+
+        .orders-table-wrapper {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: auto;
+            box-sizing: border-box;
+        }
+
+        .orders-table {
+            width: 100%;
+            min-width: 900px;
+            border-collapse: collapse;
+            table-layout: auto;
+        }
+        
+/* Mint-green theme for All Orders page only */
+        body {
+            background:
+                radial-gradient(ellipse at 85% 5%, rgba(167, 243, 208, 0.30), transparent 35%),
+                radial-gradient(ellipse at 5% 95%, rgba(209, 250, 229, 0.40), transparent 30%),
+                #f2f8f5;
+        }
+
+        .dashboard-main {
+            background: transparent;
+        }
+
+        .dashboard-main .dashboard-topbar {
+            background: transparent;
+        }
+
+        .dashboard-main .dashboard-card.all-orders-card {
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid #d5eee2;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(15, 70, 50, 0.06);
+        }
+
+        .orders-table-wrapper {
+            border: 1px solid #e0f1e8;
+            border-radius: 12px;
+            background: #ffffff;
+        }
+
+        .orders-table th {
+            background: #eaf7f1;
+            color: #145b46;
+        }
+
+        .orders-table td {
+            border-bottom-color: #e3efe9;
+        }
+
+        .orders-table tbody tr:hover {
+            background: #f0fbf5;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<main class="dashboard dashboard-layout">
+
+    <aside class="dashboard-sidebar">
+        <div class="sidebar-heading">
+            <span class="sidebar-logo">L</span>
+            <div>
+                <h2>LaundryCare</h2>
+                <p>Admin Portal</p>
+            </div>
+        </div>
+
+        <p class="sidebar-label">ADMIN MENU</p>
+
+        <nav class="sidebar-nav">
+            <a href="/dashboard/" class="sidebar-link">
+                Dashboard
+            </a>
+
+            <a href="/admin-orders/" class="sidebar-link active">
+                All Orders
+            </a>
+
+            <a href="/daily-orders-report/" class="sidebar-link">
+                Daily Orders Report
+            </a>
+
+            <a href="/revenue-report/" class="sidebar-link">
+                Revenue Report
+            </a>
+        </nav>
+
+        <a href="/logout/" class="sidebar-logout">
+            Logout
+        </a>
+    </aside>
+
+    <section class="dashboard-main">
+
+        <div class="dashboard-topbar">
+            <div>
+                <p class="dashboard-eyebrow">LAUNDRYCARE / ADMIN</p>
+                <h1>All Orders</h1>
+                <p>View orders from all customer accounts.</p>
+            </div>
+        </div>
+
+        <div class="dashboard-section-heading">
+            <div>
+                <h2>Order Management</h2>
+                <p>Total orders: {{ orders|length }}</p>
+            </div>
+        </div>
+
+        <div class="dashboard-card orders-card all-orders-card"></div>
+
+            {% if orders %}
+
+            <div class="orders-table-wrapper">
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Order Date</th>
+                            <th>Expected Date</th>
+                            <th>Status</th>
+                            <th>Total Amount</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td class="order-id">
+                                #{{ order.id }}
+                            </td>
+
+                            <td>
+                                {{ order.customer.name }}
+                                ({{ order.customer.user.username }})
+                            </td>
+
+                            <td>
+                                {{ order.order_date|date:"d M Y, h:i A" }}
+                            </td>
+
+                            <td>
+                                {{ order.expected_date|date:"d M Y" }}
+                            </td>
+
+                            <td>
+                                <span class="order-status">
+                                    {{ order.status }}
+                                </span>
+                            </td>
+
+                            <td>
+                                ₹{{ order.total_amount }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% else %}
+
+            <div class="orders-empty">
+                <h3>No Orders Found</h3>
+                <p>There are currently no orders to display.</p>
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+</html>

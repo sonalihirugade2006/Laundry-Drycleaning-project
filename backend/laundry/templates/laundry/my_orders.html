@@ -64,11 +64,10 @@
                         <strong>Total Amount:</strong>
                         ₹{{ order.total_amount }}
                     </p>
-                    <a href="/order-tracking/{{ order.id }}/">
-                    Track Order
+                    <a href="/order-tracking/{{ order.id }}/" class="track-order-btn">
+                        Track Order →
                     </a>
-
-                    <p>
+                                        <p>
                         <strong>Delivery Address:</strong><br>
                         {{ order.address.address_line }},
                         {{ order.address.city }} -

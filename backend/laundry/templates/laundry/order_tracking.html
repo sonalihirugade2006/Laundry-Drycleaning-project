@@ -49,6 +49,15 @@
             <strong>Expected Delivery:</strong>
             {{ order.expected_date|date:"d M Y" }}
         </p>
+        <p>
+            <strong>Delivery Status:</strong>
+            {% if delivery %}
+                {{ delivery.delivery_status }}
+            {% else %}
+                Not Scheduled
+            {% endif %}
+        </p>
+        
 
 
         <h4>Processing Stages</h4>
@@ -61,9 +70,11 @@
 
                     <h5>{{ stage.stage_name }}</h5>
 
-                    <p>
+                    <p class="stage-status">
                         <strong>Status:</strong>
-                        {{ stage.status }}
+                        <span class="status-value status-{{ stage.status|lower }}">
+                            {{ stage.status }}
+                        </span>
                     </p>
 
                     {% if stage.started_at %}

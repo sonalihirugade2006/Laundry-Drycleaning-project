@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>My Notifications | Laundry Care</title>
+    <title>My Notifications | LaundryCare</title>
 
     <style>
         * {
@@ -16,15 +15,15 @@
 
         body {
             font-family: Arial, sans-serif;
-            background: #f4f7fb;
-            color: #263445;
+            background: #edf7f1;
+            color: #284b3d;
             min-height: 100vh;
         }
 
         .header {
             background: #ffffff;
             padding: 22px 7%;
-            border-bottom: 1px solid #e5eaf1;
+            border-bottom: 1px solid #c8e6d5;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -34,59 +33,100 @@
 
         .header h1 {
             font-size: 25px;
-            color: #203c5b;
+            color: #145c48;
         }
 
         .header p {
-            color: #718096;
+            color: #668477;
             font-size: 14px;
             margin-top: 6px;
         }
 
         .bell {
-            font-size: 27px;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: #e3f4e9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
         }
 
         .container {
             width: 86%;
             max-width: 900px;
-            margin: 35px auto;
+            margin: 32px auto;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 24px;
+            padding: 11px 18px;
+            background: #145c48;
+            color: #ffffff;
+            border: 1px solid #145c48;
+            border-radius: 9px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .back-button:hover {
+            background: #0d4234;
+            transform: translateY(-1px);
         }
 
         .page-title {
-            font-size: 22px;
-            margin-bottom: 8px;
+            font-size: 27px;
+            margin-bottom: 9px;
+            color: #145c48;
         }
 
         .subtitle {
-            color: #718096;
-            margin-bottom: 24px;
+            color: #668477;
+            margin-bottom: 25px;
             font-size: 14px;
+            line-height: 1.6;
         }
 
         .notification-card {
-            background: #ffffff;
-            border: 1px solid #e5eaf1;
-            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(145deg, #ffffff, #f7fcf8);
+            border: 1px solid #c8e6d5;
+            border-radius: 15px;
             padding: 22px;
-            margin-bottom: 16px;
+            margin-bottom: 17px;
             display: flex;
             gap: 16px;
             align-items: flex-start;
-            box-shadow: 0 4px 12px rgba(31, 55, 80, 0.05);
+            box-shadow: 0 6px 18px rgba(20, 92, 72, 0.07);
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
+        .notification-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #145c48, #70c6a0);
+        }
+
         .notification-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 7px 18px rgba(31, 55, 80, 0.09);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 24px rgba(20, 92, 72, 0.13);
         }
 
         .notification-icon {
-            min-width: 46px;
+            flex-shrink: 0;
+            width: 46px;
             height: 46px;
-            border-radius: 50%;
-            background: #e8f2ff;
+            border-radius: 14px;
+            background: #e3f4e9;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -101,50 +141,84 @@
         .notification-content h3 {
             font-size: 17px;
             margin-bottom: 9px;
-            color: #203c5b;
+            color: #145c48;
         }
 
         .notification-content p {
-            color: #526174;
+            color: #536b60;
             font-size: 15px;
-            line-height: 1.6;
+            line-height: 1.7;
             overflow-wrap: anywhere;
         }
 
-        .notification-content small {
+        .notification-content .notification-date {
             display: block;
-            color: #8995a5;
+            color: #82958b;
             margin-top: 12px;
             font-size: 12px;
+        }
+
+        .read-button {
+            margin-top: 12px;
+            background: #145c48;
+            color: #ffffff;
+            border: none;
+            padding: 9px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .read-button:hover {
+            background: #0d4234;
+        }
+
+        .read-label {
+            display: inline-block;
+            margin-top: 12px;
+            color: #21835a;
+            font-size: 13px;
+            font-weight: 700;
         }
 
         .empty-state {
             background: #ffffff;
             text-align: center;
             padding: 45px 20px;
-            border: 1px solid #e5eaf1;
-            border-radius: 12px;
+            border: 1px solid #c8e6d5;
+            border-radius: 15px;
+            box-shadow: 0 6px 18px rgba(20, 92, 72, 0.06);
         }
 
         .empty-state .empty-icon {
-            font-size: 42px;
-            margin-bottom: 14px;
+            width: 68px;
+            height: 68px;
+            margin: 0 auto 16px;
+            border-radius: 20px;
+            background: #e3f4e9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
         }
 
         .empty-state h3 {
             margin-bottom: 10px;
-            color: #203c5b;
+            color: #145c48;
         }
 
         .empty-state p {
-            color: #718096;
+            color: #668477;
             font-size: 14px;
+            line-height: 1.6;
         }
 
         .footer {
             text-align: center;
             padding: 22px;
-            color: #8995a5;
+            color: #82958b;
             font-size: 12px;
         }
 
@@ -159,17 +233,22 @@
 
             .container {
                 width: 92%;
-                margin: 25px auto;
+                margin: 24px auto;
+            }
+
+            .page-title {
+                font-size: 24px;
             }
 
             .notification-card {
-                padding: 16px;
+                padding: 18px 14px;
                 gap: 12px;
             }
 
             .notification-icon {
-                min-width: 38px;
+                width: 38px;
                 height: 38px;
+                border-radius: 11px;
                 font-size: 19px;
             }
         }
@@ -187,6 +266,11 @@
     </header>
 
     <main class="container">
+
+        <a href="/dashboard/" class="back-button">
+            ← Back to Dashboard
+        </a>
+
         <h2 class="page-title">My Notifications</h2>
         <p class="subtitle">
             Stay updated on your orders and deliveries.
@@ -195,6 +279,7 @@
         {% if notifications %}
             {% for notification in notifications %}
                 <div class="notification-card">
+
                     <div class="notification-icon">
                         {% if notification.notification_type == 'Delivery Update' %}
                             🚚
@@ -210,22 +295,23 @@
 
                         <p>{{ notification.message }}</p>
 
-                        <small>
+                        <small class="notification-date">
                             {{ notification.created_at|date:"d M Y, h:i A" }}
                         </small>
-                        
-{% if not notification.is_read %}
-    <form method="post" action="{% url 'mark_notification_read' notification.id %}" style="margin-top: 12px;">
-        {% csrf_token %}
-        <button type="submit" style="background: #203c5b; color: white; border: none; padding: 9px 14px; border-radius: 6px; cursor: pointer;">
-            Mark as Read
-        </button>
-    </form>
-{% else %}
-    <small style="color: #218838;">✓ Read</small>
-{% endif %}
 
+                        {% if not notification.is_read %}
+                            <form method="post"
+                                  action="{% url 'mark_notification_read' notification.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="read-button">
+                                    Mark as Read
+                                </button>
+                            </form>
+                        {% else %}
+                            <small class="read-label">✓ Read</small>
+                        {% endif %}
                     </div>
+
                 </div>
             {% endfor %}
         {% else %}
@@ -235,6 +321,7 @@
                 <p>Your order and delivery updates will appear here.</p>
             </div>
         {% endif %}
+
     </main>
 
     <footer class="footer">

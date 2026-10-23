@@ -6,86 +6,133 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Orders Report | LaundryCare</title>
 
-    <style>
+    
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background: #f0fdf4;
+        margin: 0;
+        padding: 35px 20px;
+        color: #334155;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 1000px;
+        margin: auto;
+        padding: 32px;
+        background: #ffffff;
+        border: 1px solid #d1fae5;
+        border-radius: 18px;
+        box-shadow: 0 8px 25px rgba(6, 78, 59, 0.08);
+    }
+
+    h1 {
+        color: #064e3b;
+        text-align: center;
+        font-size: 30px;
+        font-weight: 800;
+        margin: 0 0 10px;
+    }
+
+    .subtitle {
+        text-align: center;
+        color: #64748b;
+        font-size: 15px;
+        margin: 0 0 30px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin-top: 24px;
+        overflow: hidden;
+        border: 1px solid #d1fae5;
+        border-radius: 12px;
+    }
+
+    th,
+    td {
+        padding: 16px 14px;
+        text-align: center;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    th {
+        background: #065f46;
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    td {
+        font-size: 15px;
+        color: #334155;
+    }
+
+    tbody tr:nth-child(even) {
+        background: #f0fdf4;
+    }
+
+    tbody tr:hover {
+        background: #dcfce7;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .empty {
+        text-align: center;
+        padding: 26px;
+        color: #64748b;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        margin-top: 26px;
+        padding: 12px 18px;
+        background: #047857;
+        color: #ffffff;
+        border-radius: 9px;
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: background 0.2s ease;
+    }
+
+    .back-link:hover {
+        background: #065f46;
+    }
+
+    @media (max-width: 600px) {
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f6f8;
-            margin: 0;
-            padding: 25px;
-            color: #333;
+            padding: 14px;
         }
 
         .container {
-            max-width: 900px;
-            margin: auto;
-            background: white;
-            padding: 25px;
-            border-radius: 8px;
+            padding: 18px 12px;
+            overflow-x: auto;
         }
 
         h1 {
-            text-align: center;
-            margin-bottom: 8px;
+            font-size: 25px;
         }
 
-        .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 25px;
+        th,
+        td {
+            padding: 12px 9px;
+            font-size: 13px;
         }
+    }
+</style>
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: center;
-        }
-
-        th {
-            background: #eeeeee;
-        }
-
-        tr:nth-child(even) {
-            background: #f9f9f9;
-        }
-
-        .empty {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            color: #333;
-            text-decoration: none;
-        }
-
-        .back-link:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 600px) {
-            body {
-                padding: 10px;
-            }
-
-            .container {
-                padding: 12px;
-                overflow-x: auto;
-            }
-
-            th, td {
-                padding: 8px;
-            }
-        }
-    </style>
 </head>
 
 <body>
