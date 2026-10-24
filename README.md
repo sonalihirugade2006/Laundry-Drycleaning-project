@@ -54,7 +54,15 @@ Backend URL: http://127.0.0.1:8000/
 Frontend URL: http://localhost:5173/
 
 ## Testing
-The project has been tested for customer order placement, quantity validation, order tracking, delivery validation, payment records, notifications, and reports.
+
+The project has been tested for customer order placement, quantity validation, order tracking, delivery validation, payment calculations, payment status updates, customer notifications, reports, and password reset functionality.
+
+Gmail SMTP email delivery has been configured and tested successfully for password reset emails.
 
 ## Project Status
-The application is under development and testing. Online payment gateway integration and deployment may require additional configuration.
+
+The application is in the final testing and deployment preparation stage. Gmail SMTP email delivery and password reset functionality have been verified. Frontend and backend deployment and production configuration are pending.
+
+## Documentation
+
+Project documentation, including the Entity Relationship Diagram (ERD), Data Flow Diagram (DFD), and UI Design, is available in the `docs/` directory.
