@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from 'react'
 import OrderBooking from './OrderBooking.jsx'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function App() {
   const [services, setServices] = useState([])
@@ -9,7 +10,7 @@ function App() {
   const [showBooking, setShowBooking] = useState(false)
 
   useEffect(() => {
-    fetch('/api/services/')
+    fetch(`${API_BASE_URL}/api/services/`)
       .then((response) => {
         if (!response.ok) throw new Error('Unable to load services')
         return response.json()
@@ -35,13 +36,13 @@ function App() {
             <a href="#services" className="hidden rounded-full bg-emerald-50 px-4 py-2 text-sm font-bold text-emerald-800 hover:bg-emerald-100 sm:block">
               Services
             </a>
-            <a href="http://127.0.0.1:8000/" className="hidden rounded-full bg-emerald-50 px-4 py-2 text-sm font-bold text-emerald-800 hover:bg-emerald-100 sm:block">
+            <a href="https://laundrycare-backend.onrender.com/" className="hidden rounded-full bg-emerald-50 px-4 py-2 text-sm font-bold text-emerald-800 hover:bg-emerald-100 sm:block">
               About Us
             </a>
-            <a href="http://127.0.0.1:8000/login/" className="rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-bold text-white shadow-md transition hover:bg-emerald-800">
+            <a href="https://laundrycare-backend.onrender.com/" className="rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-bold text-white shadow-md transition hover:bg-emerald-800">
               Login
             </a>
-            <a href="http://127.0.0.1:8000/register/" className="rounded-xl bg-emerald-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-emerald-950">
+            <a href="https://laundrycare-backend.onrender.com/" className="rounded-xl bg-emerald-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-emerald-950">
               Register
             </a>
           </div>
@@ -219,9 +220,11 @@ function App() {
         </p>
         <div className="mt-4 flex flex-wrap justify-center gap-5 text-sm font-semibold text-slate-600">
           <a href="#services" className="hover:text-emerald-700">Services</a>
-          <a href="http://127.0.0.1:8000/" className="hover:text-emerald-700">About Us</a>
-          <a href="http://127.0.0.1:8000/login/" className="hover:text-emerald-700">Login</a>
-          <a href="http://127.0.0.1:8000/register/" className="hover:text-emerald-700">Register</a>
+          
+          <a href="https://laundrycare-backend.onrender.com/" className="hover:text-emerald-700">About Us</a>
+          <a href="https://laundrycare-backend.onrender.com/login/" className="hover:text-emerald-700">Login</a>
+          <a href="https://laundrycare-backend.onrender.com/register/" className="hover:text-emerald-700">Register</a>
+
         </div>
         <p className="mt-5 text-xs text-slate-400">
           © {new Date().getFullYear()} LaundryCare. All rights reserved.

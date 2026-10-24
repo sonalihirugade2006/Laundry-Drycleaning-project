@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from 'react'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function OrderBooking() {
   const [services, setServices] = useState([])
@@ -14,7 +15,7 @@ function OrderBooking() {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    fetch('/api/services/', {
+    fetch(`${API_BASE_URL}/api/services/`, {
       credentials: 'include',
     })
       .then((response) => {
@@ -37,7 +38,7 @@ function OrderBooking() {
   }, [])
 
   useEffect(() => {
-    fetch('/api/addresses/', {
+    fetch(`${API_BASE_URL}/api/addresses/`, {
       credentials: 'include',
     })
       .then((response) => {
@@ -122,7 +123,7 @@ function OrderBooking() {
                 setError('')
 
                 try {
-                  const csrfResponse = await fetch('/api/csrf/', {
+                  const csrfResponse = await fetch(`${API_BASE_URL}/api/csrf/`, {
                     credentials: 'include',
                   })
 
@@ -156,7 +157,7 @@ function OrderBooking() {
                   formData.append('quantity', quantity)
                   formData.append('expected_date', expectedDate)
 
-                  const response = await fetch('/api/orders/', {
+                  const response = await fetch(`${API_BASE_URL}/api/orders/`, {
                     method: 'POST',
                     credentials: 'include',
                     headers: {
@@ -175,7 +176,7 @@ function OrderBooking() {
                     )
                   }
 
-                  window.location.href = '/dashboard/'
+                  window.location.href = `${API_BASE_URL}/dashboard/`
                 } catch (err) {
                   setError(
                     err.message ||
