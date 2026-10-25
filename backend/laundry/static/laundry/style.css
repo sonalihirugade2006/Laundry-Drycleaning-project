@@ -11,8 +11,6 @@ body {
 }
 
 
-/* Navigation Bar */
-
 header {
     background-color: #ffffff;
     padding: 20px 60px;
@@ -38,7 +36,6 @@ nav a:hover {
 }
 
 
-/* Hero Section */
 
 .hero {
     min-height: 450px;
@@ -79,8 +76,6 @@ button:hover {
 }
 
 
-/* Services Section */
-
 .services {
     background-color: #ffffff;
     padding: 70px 60px;
@@ -118,7 +113,6 @@ button:hover {
 }
 
 
-/* How It Works */
 
 .how-it-works {
     padding: 70px 60px;
@@ -145,8 +139,6 @@ button:hover {
     line-height: 1.5;
 }
 
-
-/* Why Choose Us */
 
 .why-us {
     background-color: #ffffff;
@@ -175,8 +167,6 @@ button:hover {
 }
 
 
-/* Footer */
-
 footer {
     background-color: #333;
     color: white;
@@ -184,8 +174,6 @@ footer {
     padding: 20px;
 }
 
-
-/* Mobile Responsive */
 
 @media (max-width: 768px) {
 
@@ -240,8 +228,6 @@ footer {
 }
 
 
-/* Address Section */
-
 .address-section h2 {
     margin-bottom: 25px;
 }
@@ -282,7 +268,6 @@ footer {
 .address-card p {
     margin-bottom: 8px;
 }
-/* Services Page */
 
 .services-page {
     max-width: 1100px;
@@ -325,7 +310,6 @@ footer {
     line-height: 1.6;
     margin-bottom: 12px;
 }
-/* My Orders Page */
 
 .orders-page {
     max-width: 1000px;
@@ -399,7 +383,6 @@ footer {
     text-decoration: none;
 }
 
-/* Dashboard */
 
 .dashboard {
     max-width: 1100px;
@@ -451,7 +434,6 @@ footer {
     font-weight: bold;
 }
 
-/* Order Tracking */
 
 .tracking-page {
     width: min(100% - 32px, 1000px);
@@ -504,7 +486,6 @@ footer {
     margin: 30px 0 18px;
 }
 
-/* Processing stages */
 
 .tracking-stages {
     display: grid;
@@ -547,7 +528,6 @@ footer {
     color: #334155;
 }
 
-/* Responsive layout */
 
 @media (max-width: 600px) {
     .tracking-page {
@@ -572,8 +552,6 @@ footer {
 }
 
 
-
-/* ===== Place Order Page ===== */
 
 .order-page {
     max-width: 720px;
@@ -665,7 +643,6 @@ footer {
     }
 }
 
-/* ===== Login and Register Pages ===== */
 
 body:has(input[name="username"]) {
     min-height: 100vh;
@@ -752,7 +729,6 @@ body:has(input[name="username"]) a {
     font-weight: 600;
 }
 
-/* ===== Register Page ===== */
 
 .form-container {
     width: calc(100% - 32px);
@@ -835,7 +811,6 @@ body:has(input[name="username"]) a {
     }
 }
 
-/* ===== Improve How It Works Cards ===== */
 
 .how-it-works {
     background-color: #f5f7fa;
@@ -874,8 +849,6 @@ body:has(input[name="username"]) a {
 }
 
 
-/* ===== Improve Why Choose Us Cards ===== */
-
 .why-us .why-container {
     max-width: 1100px;
     margin: 0 auto;
@@ -908,7 +881,6 @@ body:has(input[name="username"]) a {
     line-height: 1.7;
 }
 
-/* Feature Card Icons */
 
 .feature-icon {
     width: 90px;
@@ -953,9 +925,6 @@ header {
     background-color: #1e493d;
 }
 
-/* =========================================
-   LAUNDRYCARE PREMIUM HOMEPAGE DESIGN
-   ========================================= */
 
 :root {
     --lc-dark: #173f3a;
@@ -968,7 +937,6 @@ header {
     --lc-white: #ffffff;
 }
 
-/* Homepage background */
 body:has(.premium-hero) {
     background: var(--lc-cream);
     color: var(--lc-text);
@@ -976,7 +944,6 @@ body:has(.premium-hero) {
     line-height: 1.6;
 }
 
-/* Navigation */
 .site-header {
     position: sticky;
     top: 0;
@@ -1049,7 +1016,6 @@ body:has(.premium-hero) {
     color: var(--lc-white);
 }
 
-/* Hero section */
 body:has(.premium-hero) .premium-hero {
     display: grid;
     grid-template-columns: 1fr 0.95fr;
@@ -1198,7 +1164,6 @@ body:has(.premium-hero) .premium-hero {
     font-size: 12px;
 }
 
-/* Shared section headings */
 body:has(.premium-hero) .premium-section {
     padding: 76px 7%;
     text-align: center;
@@ -1221,7 +1186,6 @@ body:has(.premium-hero) .section-heading > p {
     font-size: 15px;
 }
 
-/* Services cards */
 body:has(.premium-hero) .services {
     background: var(--lc-white);
 }
@@ -1296,7 +1260,6 @@ body:has(.premium-hero) .premium-service-card p {
     color: var(--lc-dark);
 }
 
-/* How it works */
 body:has(.premium-hero) .how-it-works {
     background: var(--lc-cream);
 }
@@ -1357,7 +1320,6 @@ body:has(.premium-hero) .premium-step p {
     line-height: 1.8;
 }
 
-/* Why choose us */
 body:has(.premium-hero) .why-us {
     background: var(--lc-white);
 }
@@ -1396,7 +1358,6 @@ body:has(.premium-hero) .benefit-card p {
     line-height: 1.7;
 }
 
-/* Call to action */
 body:has(.premium-hero) .home-cta {
     display: flex;
     align-items: center;
@@ -1445,7 +1406,6 @@ body:has(.premium-hero) .home-cta .cta-btn:hover {
     background: #f1cc85;
 }
 
-/* Footer */
 body:has(.premium-hero) .premium-footer {
     padding: 42px 20px 20px;
     background: #12332f;
@@ -1491,7 +1451,6 @@ body:has(.premium-hero) .premium-footer .copyright {
     font-size: 12px;
 }
 
-/* Responsive layout */
 @media (max-width: 900px) {
     .site-header {
         padding: 16px 5%;
@@ -1623,7 +1582,6 @@ body:has(.premium-hero) .premium-footer .copyright {
     }
 }
 
-/* Full-width LaundryCare hero background */
 body:has(.premium-hero) .premium-hero {
     display: flex;
     align-items: center;
@@ -1669,7 +1627,6 @@ body:has(.premium-hero) .premium-hero .hero-visual {
     }
 }
 
-/* Improve spacing between homepage sections */
 body:has(.premium-hero) #services {
     padding-bottom: 35px;
 }
@@ -1677,7 +1634,6 @@ body:has(.premium-hero) #services {
 body:has(.premium-hero) #how-it-works {
     padding-top: 45px;
 }
-/* Login and Register page header */
 body:not(:has(.premium-hero)) header:has(nav) {
 width: min(900px, 88%);
 margin: 0 auto 30px ;
@@ -1743,7 +1699,6 @@ body:not(:has(.premium-hero)) header:has(nav) nav a:hover {
         font-size: 13px;
     }
 }
-/* ===== LaundryCare Dashboard Redesign ===== */
 
 .dashboard {
     max-width: 1400px;
@@ -1855,7 +1810,6 @@ body:not(:has(.premium-hero)) header:has(nav) nav a:hover {
         flex: initial;
     }
 }
-/* ===== LaundryCare Modern Dashboard ===== */
 
 .dashboard-layout {
     display: grid;
@@ -1869,7 +1823,6 @@ body:not(:has(.premium-hero)) header:has(nav) nav a:hover {
     align-items: start;
 }
 
-/* Sidebar */
 .dashboard-sidebar {
     background: #ffffff;
     border: 1px solid #dcefe6;
@@ -1977,7 +1930,6 @@ body:not(:has(.premium-hero)) header:has(nav) nav a:hover {
     text-decoration: none;
 }
 
-/* Main content */
 .dashboard-main {
     min-width: 0;
 }
@@ -2062,7 +2014,7 @@ body:not(:has(.premium-hero)) header:has(nav) nav a:hover {
     font-size: 11px;
 }
 
-/* Welcome banner */
+
 .dashboard-welcome {
     position: relative;
     display: flex;
@@ -2121,7 +2073,6 @@ body:not(:has(.premium-hero)) header:has(nav) nav a:hover {
     font-weight: 800;
 }
 
-/* Section heading */
 .dashboard-section-heading {
     margin-bottom: 15px;
 }
@@ -2138,7 +2089,6 @@ body:not(:has(.premium-hero)) header:has(nav) nav a:hover {
     font-size: 13px;
 }
 
-/* Clean horizontal menu rows */
 .dashboard-main .dashboard-container {
     display: flex;
     flex-direction: column;
@@ -2215,7 +2165,6 @@ body:not(:has(.premium-hero)) header:has(nav) nav a:hover {
     color: white;
 }
 
-/* Responsive layout */
 @media (max-width: 950px) {
     .dashboard-layout {
         grid-template-columns: 210px minmax(0, 1fr);
@@ -2278,7 +2227,6 @@ body:not(:has(.premium-hero)) header:has(nav) nav a:hover {
     }
 }
 
-/* ===== Modern LaundryCare Services Page ===== */
 
 .services-page {
     max-width: 1150px;
@@ -2398,7 +2346,6 @@ body:not(:has(.premium-hero)) header:has(nav) nav a:hover {
     transform: translateY(-2px);
 }
 
-/* ===== LaundryCare My Payments Page ===== */
 
 .tracking-page:has(.tracking-stages) {
     width: 100%;
@@ -2526,7 +2473,6 @@ body:not(:has(.premium-hero)) header:has(nav) nav a:hover {
     }
 }
 
-/* ===== Payment Status Badges ===== */
 
 .tracking-page .tracking-stage .payment-status-row {
     align-items: center;
@@ -2559,8 +2505,6 @@ body:not(:has(.premium-hero)) header:has(nav) nav a:hover {
     background: #fee2e2;
     border: 1px solid #fecaca;
 }
-
-/* ===== LaundryCare Profile Page ===== */
 
 main.profile {
     width: 100%;
@@ -2723,7 +2667,6 @@ main.profile > h2 {
     }
 }
 
-/* Order tracking status alignment */
 
 .tracking-stage .stage-status {
     display: flex;
@@ -2760,7 +2703,6 @@ main.profile > h2 {
     color: #92400e;
 }
 
-/* Final processing stage layout fix */
 
 .tracking-page .tracking-stages {
     display: grid;
@@ -2802,7 +2744,6 @@ main.profile > h2 {
 }
 
 
-/* ===== Services Page: Emerald Green Theme ===== */
 
 body:has(.services-page) {
     background-color: #edf7f1;
@@ -2905,8 +2846,6 @@ body:has(.services-page) {
         font-size: 27px;
     }
 }
-/* ===== NAVBAR BUTTONS ===== */
-
 .main-nav {
     display: flex;
     align-items: center;
@@ -2936,8 +2875,6 @@ body:has(.services-page) {
 }
 
 
-
-/* Register button */
 .main-nav a.nav-register {
     background-color: #164e43;
     border-color: #164e43;
@@ -2950,7 +2887,6 @@ body:has(.services-page) {
     color: #ffffff;
 }
 
-/* Mobile responsive */
 @media (max-width: 768px) {
     .main-nav {
         gap: 8px;
@@ -2961,7 +2897,6 @@ body:has(.services-page) {
         font-size: 13px;
     }
 }
-/* Home button - same design as Services and How It Works */
 .main-nav a.active {
     background-color: #f0f8f2 !important;
     border: 1px solid #d5e9dc !important;
