@@ -55,14 +55,17 @@ Frontend URL: http://localhost:5173/
 
 ## Testing
 
-The project has been tested for customer order placement, quantity validation, order tracking, delivery validation, payment calculations, payment status updates, customer notifications, reports, and password reset functionality.
+The project has been tested for customer registration, login, address management, order placement, quantity validation, order tracking, delivery management, payment calculations, payment status updates, customer notifications, reports, and password reset functionality.
 
-Gmail SMTP email delivery has been configured and tested successfully for password reset emails.
+Password reset functionality has been tested using Django's console email backend. Real email delivery configuration is pending.
 
 ## Project Status
 
-The application is in the final testing and deployment preparation stage. Gmail SMTP email delivery and password reset functionality have been verified. Frontend and backend deployment and production configuration are pending.
+The React frontend is deployed on Vercel, and the Django backend is deployed on Render. Final production database configuration and live application testing are in progress.
 
+## Live Application
+
+Frontend: https://laundry-drycleaning-project.vercel.app/
 ## Documentation
 
 Project documentation, including the Entity Relationship Diagram (ERD), Data Flow Diagram (DFD), and UI Design, is available in the `docs/` directory.
